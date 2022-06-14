@@ -10,7 +10,7 @@ namespace WebBackup.WPF.Data
         {
         }
 
-        public DbSet<Website> Websites { get; set; }
+        public DbSet<Website> Websites => Set<Website>();
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
