@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using WebBackup.WPF.Data;
+using Microsoft.Extensions.Configuration;
 
 namespace WebBackup.Tests
 {
@@ -17,7 +18,9 @@ namespace WebBackup.Tests
 
         public WebsiteRepositoryTests()
         {
-            string connectionString = @"Data Source=D:\Bence\Dokumentumok\Visual Studio 2022\Repos\borosbence\Website-Backup\Database\webbackup.db";
+            var config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+            string connectionString = config.GetConnectionString("WebBackupDB");
+
             var options = new DbContextOptionsBuilder<WBContext>().UseSqlite(connectionString).Options;
             var context = new WBContext(options);
             _repo = new WebsiteRepository(context);

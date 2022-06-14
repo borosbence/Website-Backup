@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WebBackup.WPF.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace WebBackup.Tests
 {
@@ -10,8 +11,9 @@ namespace WebBackup.Tests
         [TestMethod()]
         public void CanConnectToDb()
         {
-            // TODO: app.config file read
-            string connectionString = @"Data Source=D:\Bence\Dokumentumok\Visual Studio 2022\Repos\borosbence\Website-Backup\Database\webbackup.db";
+            var config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+            string connectionString = config.GetConnectionString("WebBackupDB");
+
             var options = new DbContextOptionsBuilder<WBContext>().UseSqlite(connectionString).Options;
             var context = new WBContext(options);
 

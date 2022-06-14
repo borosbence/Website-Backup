@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -20,8 +21,14 @@ namespace WebBackup.WPF
     /// </summary>
     public partial class App : Application
     {
+        public static IConfiguration Config { get; private set; }
+
         public App()
         {
+            Config = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json")
+                .Build();
+
             var serviceprovider = ConfigureServices();
             Ioc.Default.ConfigureServices(serviceprovider);
             InitializeComponent();
@@ -33,12 +40,12 @@ namespace WebBackup.WPF
         private static IServiceProvider ConfigureServices()
         {
             var services = new ServiceCollection();
-            string connectionString = ConfigurationManager.ConnectionStrings["WebBackupDB"].ConnectionString;
+            string connectionString = Config.GetConnectionString("WebBackupDB");
             services.AddDbContext<WBContext>(options =>
                 options.UseSqlite(connectionString));
 
             services.AddScoped<WebsiteRepository>();
-            services.AddTransient<WebsiteViewModel>();
+            services.AddTransient<WebsitesViewModel>();
 
             return services.BuildServiceProvider();
         }
