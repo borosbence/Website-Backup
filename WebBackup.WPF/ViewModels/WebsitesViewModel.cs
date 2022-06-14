@@ -9,15 +9,15 @@ using WebBackup.WPF.Repositories;
 
 namespace WebBackup.WPF.ViewModels
 {
-    public class WebsiteViewModel
+    public class WebsitesViewModel
     {
-        public WebsiteViewModel(WebsiteRepository repository)
+        public WebsitesViewModel(WebsiteRepository repository)
         {
             _repository = repository;
             Task.Run(async () => await Initialize()).Wait();
         }
 
-        private WebsiteRepository _repository;
+        private readonly WebsiteRepository _repository;
 
         public ObservableCollection<Website> Websites { get; set; } = new ObservableCollection<Website>();
 
