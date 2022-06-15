@@ -8,13 +8,14 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using WebBackup.WPF.Data;
 using Microsoft.Extensions.Configuration;
+using WebBackup.WPF.Models;
 
 namespace WebBackup.Tests
 {
     [TestClass()]
     public class WebsiteRepositoryTests
     {
-        private WebsiteRepository _repo;
+        private GenericRepository<Website, WBContext> _repository;
 
         public WebsiteRepositoryTests()
         {
@@ -23,13 +24,13 @@ namespace WebBackup.Tests
 
             var options = new DbContextOptionsBuilder<WBContext>().UseSqlite(connectionString).Options;
             var context = new WBContext(options);
-            _repo = new WebsiteRepository(context);
+            _repository = new GenericRepository<Website, WBContext>(context);
         }
 
         [TestMethod()]
         public void GetAllTest()
         {
-            var list = _repo.GetAll().Result;
+            var list = _repository.GetAll().Result;
             int result = list.Count;
 
             Assert.AreEqual(2, result);

@@ -4,13 +4,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using WebBackup.WPF.Data;
+using WebBackup.WPF.Models;
 using WebBackup.WPF.Repositories;
 using WebBackup.WPF.ViewModels;
 
@@ -43,7 +41,7 @@ namespace WebBackup.WPF
 
             string connectionString = Config.GetConnectionString("WebBackupDB");
             services.AddDbContext<WBContext>(options => options.UseSqlite(connectionString));
-            services.AddScoped<WebsiteRepository>();
+            services.AddScoped<IGenericRepository<Website>, GenericRepository<Website, WBContext>>();
             services.AddTransient<WebsitesViewModel>();
 
             return services.BuildServiceProvider();

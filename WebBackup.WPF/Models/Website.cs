@@ -11,12 +11,16 @@ namespace WebBackup.WPF.Models
         public int Id { get; set; }
 
         [Required]
-        [StringLength(250)]
         [ObservableProperty]
         private string name = string.Empty;
 
         [DataType(DataType.Url)]
         [ObservableProperty]
         private string? url;
+
+        
+        [ForeignKey("FTPConnection")]
+        public int FTPConnectionId { get; set; }
+        public FTPConnection? FTPConnection { get; set; }
     }
 }

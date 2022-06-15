@@ -11,13 +11,13 @@ namespace WebBackup.WPF.ViewModels
 {
     public class WebsitesViewModel
     {
-        public WebsitesViewModel(WebsiteRepository repository)
+        public WebsitesViewModel(IGenericRepository<Website> repository)
         {
             _repository = repository;
             Task.Run(async () => await Initialize()).Wait();
         }
 
-        private readonly WebsiteRepository _repository;
+        private readonly IGenericRepository<Website> _repository;
 
         public ObservableCollection<Website> Websites { get; set; } = new ObservableCollection<Website>();
 

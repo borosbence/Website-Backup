@@ -24,7 +24,6 @@ namespace WebBackup.WPF.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(250)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("URL")

@@ -14,7 +14,7 @@ namespace WebBackup.WPF.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 250, nullable: false),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
                     URL = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
