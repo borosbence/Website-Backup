@@ -27,15 +27,14 @@ namespace WebBackup.WPF.Repositories
 
         public async Task<List<TEntity>> GetAll(params Expression<Func<TEntity, object>>[] includes)
         {
-            var dbSet = _context.Set<TEntity>();
-            IEnumerable<TEntity> query = Enumerable.Empty<TEntity>();
+            IQueryable<TEntity> query = _context.Set<TEntity>();
 
             foreach (var include in includes)
             {
-                query = dbSet.Include(include);
+                query = query.Include(include);
             }
 
-            return query.Any() ? query.ToList() : await dbSet.ToListAsync();
+            return await query.ToListAsync();
         }
 
         public async Task<TEntity?> GetById(object id)

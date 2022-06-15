@@ -30,6 +30,6 @@ namespace WebBackup.WPF.Models
         [Required]
         [ForeignKey("Website")]
         public int WebsiteId { get; set; }
-        public Website Website { get; set; }
+        public Website? Website { get; set; }
     }
 }
