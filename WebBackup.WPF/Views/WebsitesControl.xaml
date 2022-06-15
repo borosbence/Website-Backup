@@ -23,15 +23,15 @@
             </TreeViewItem>
         </TreeView>-->
 
-        <TreeView ItemsSource="{Binding Websites}">
-            <TreeView.ItemTemplate>
+        <ListView ItemsSource="{Binding Websites}">
+            <ListView.ItemTemplate>
                 <HierarchicalDataTemplate DataType="{x:Type model:Website}" >
                     <TreeViewItem Header="{Binding Name}">
                         <TreeViewItem Header="FTP" Visibility="{Binding FTPConnection, Converter={StaticResource conv}}" />
                         <TreeViewItem Header="SQL" Visibility="{Binding FTPConnection, Converter={StaticResource conv}}"/>
                     </TreeViewItem>
                 </HierarchicalDataTemplate>
-            </TreeView.ItemTemplate>
-        </TreeView>
+            </ListView.ItemTemplate>
+        </ListView>
     </Grid>
 </UserControl>
