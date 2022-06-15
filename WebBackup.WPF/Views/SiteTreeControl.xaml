@@ -9,6 +9,6 @@
              d:DesignHeight="450" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=vm:WebsitesViewModel, IsDesignTimeCreatable=False}">
     <Grid>
-        <ListBox ItemsSource="{Binding Websites}"/>
+        <TreeView ItemsSource="{Binding Websites}" />
     </Grid>
 </UserControl>

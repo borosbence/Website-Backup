@@ -1,19 +1,22 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebBackup.WPF.Models
 {
     [Table("Websites")]
-    public class Website : IEntity
+    public partial class Website : ObservableValidator, IEntity
     {
         [Key]
         public int Id { get; set; }
 
         [Required]
         [StringLength(250)]
-        public string Name { get; set; } = string.Empty;
+        [ObservableProperty]
+        private string name = string.Empty;
 
         [DataType(DataType.Url)]
-        public string? URL { get; set; }
+        [ObservableProperty]
+        private string? url;
     }
 }

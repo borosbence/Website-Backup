@@ -24,7 +24,7 @@ namespace WebBackup.WPF.Views
     {
         public SiteTreeControl()
         {
-            this.DataContext = Ioc.Default.GetRequiredService<WebsitesViewModel>();
+            DataContext = Ioc.Default.GetRequiredService<WebsitesViewModel>();
             InitializeComponent();
         }
     }

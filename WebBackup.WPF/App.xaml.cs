@@ -40,10 +40,9 @@ namespace WebBackup.WPF
         private static IServiceProvider ConfigureServices()
         {
             var services = new ServiceCollection();
-            string connectionString = Config.GetConnectionString("WebBackupDB");
-            services.AddDbContext<WBContext>(options =>
-                options.UseSqlite(connectionString));
 
+            string connectionString = Config.GetConnectionString("WebBackupDB");
+            services.AddDbContext<WBContext>(options => options.UseSqlite(connectionString));
             services.AddScoped<WebsiteRepository>();
             services.AddTransient<WebsitesViewModel>();
 
