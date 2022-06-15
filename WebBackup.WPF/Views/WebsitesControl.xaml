@@ -12,6 +12,13 @@
              d:DataContext="{d:DesignInstance Type=vm:WebsitesViewModel, IsDesignTimeCreatable=False}">
     <UserControl.Resources>
         <conv:ObjectToVisibilityConverter x:Key="conv" />
+
+        <HierarchicalDataTemplate x:Name="tvTmpl" DataType="{x:Type model:Website}">
+            <TreeViewItem Header="{Binding Name}">
+                <TreeViewItem Header="FTP" Visibility="{Binding FTPConnection, Converter={StaticResource conv}}" />
+                <TreeViewItem Header="SQL" Visibility="{Binding FTPConnection, Converter={StaticResource conv}}"/>
+            </TreeViewItem>
+        </HierarchicalDataTemplate>
     </UserControl.Resources>
     <Grid>
         <!--<TreeView>
@@ -23,15 +30,16 @@
             </TreeViewItem>
         </TreeView>-->
 
-        <ListView ItemsSource="{Binding Websites}">
-            <ListView.ItemTemplate>
-                <HierarchicalDataTemplate DataType="{x:Type model:Website}" >
-                    <TreeViewItem Header="{Binding Name}">
-                        <TreeViewItem Header="FTP" Visibility="{Binding FTPConnection, Converter={StaticResource conv}}" />
-                        <TreeViewItem Header="SQL" Visibility="{Binding FTPConnection, Converter={StaticResource conv}}"/>
-                    </TreeViewItem>
-                </HierarchicalDataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+        <TreeView>
+            <TreeViewItem Header="Websites" ItemsSource="{Binding Websites}">
+                <TreeViewItem.Resources>
+                    <HierarchicalDataTemplate x:Name="tvTmpl" DataType="{x:Type model:Website}">
+                        <TextBlock Text="{Binding Name}">
+                        </TextBlock>
+                    </HierarchicalDataTemplate>
+                </TreeViewItem.Resources>
+            </TreeViewItem>
+        </TreeView>
+        
     </Grid>
 </UserControl>
