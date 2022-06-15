@@ -38,7 +38,7 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" MinWidth="5"/>
             </Grid.ColumnDefinitions>
-            <local:SiteTreeControl Grid.Column="0" />
+            <local:WebsitesControl Grid.Column="0" />
             <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch"
                           ResizeBehavior="PreviousAndNext" />
             <local:FileBrowserControl Grid.Column="2" />

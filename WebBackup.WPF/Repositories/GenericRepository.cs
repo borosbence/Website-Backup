@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using WebBackup.WPF.Models;
 
@@ -25,7 +25,20 @@ namespace WebBackup.WPF.Repositories
             return await _context.Set<TEntity>().ToListAsync();
         }
 
-        public async Task<TEntity?> GetById(int id)
+        public async Task<List<TEntity>> GetAll(params Expression<Func<TEntity, object>>[] includes)
+        {
+            var dbSet = _context.Set<TEntity>();
+            IEnumerable<TEntity> query = Enumerable.Empty<TEntity>();
+
+            foreach (var include in includes)
+            {
+                query = dbSet.Include(include);
+            }
+
+            return query.Any() ? query.ToList() : await dbSet.ToListAsync();
+        }
+
+        public async Task<TEntity?> GetById(object id)
         {
             return await _context.Set<TEntity>().FindAsync(id);
         }

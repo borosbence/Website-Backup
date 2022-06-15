@@ -10,31 +10,12 @@ using System.Threading.Tasks;
 namespace WebBackup.WPF.Models
 {
     [Table("Ftp_Connections")]
-    public partial class FTPConnection : ObservableValidator, IEntity
+    public partial class FTPConnection : Connection
     {
-        [Key]
-        public int Id { get; set; }
-
-        [Required]
-        [ObservableProperty]
-        private string hostname = string.Empty;
-
-        [Required]
-        [ObservableProperty]
-        private string username = string.Empty;
-
-        [Required]
-        [ObservableProperty]
-        private string password = string.Empty;
-
         [ObservableProperty]
         private bool isSSLEnabled = false;
 
         [ObservableProperty]
         private bool isPassive = false;
-
-        [ForeignKey("Website")]
-        public int WebsiteId { get; set; }
-        public Website Website { get; set; }
     }
 }

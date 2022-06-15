@@ -15,7 +15,7 @@ namespace WebBackup.Tests
     [TestClass()]
     public class WebsiteRepositoryTests
     {
-        private GenericRepository<Website, WBContext> _repository;
+        private readonly IGenericRepository<Website> _repository;
 
         public WebsiteRepositoryTests()
         {
@@ -28,12 +28,20 @@ namespace WebBackup.Tests
         }
 
         [TestMethod()]
-        public void GetAllTest()
+        public void GetAllCountTest()
         {
             var list = _repository.GetAll().Result;
             int result = list.Count;
 
             Assert.AreEqual(2, result);
+        }
+
+        [TestMethod()]
+        public void GetAllWithNavPropertyTest()
+        {
+            var first = _repository.GetAll(x => x.FTPConnection).Result.First();
+
+            Assert.IsNotNull(first.FTPConnection);
         }
     }
 }

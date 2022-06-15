@@ -23,7 +23,7 @@ namespace WebBackup.WPF.ViewModels
 
         private async Task Initialize()
         {
-            Websites = new ObservableCollection<Website>(await _repository.GetAll());
+            Websites = new ObservableCollection<Website>(await _repository.GetAll(x => x.Id));
         }
     }
 }

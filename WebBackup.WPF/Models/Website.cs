@@ -14,13 +14,16 @@ namespace WebBackup.WPF.Models
         [ObservableProperty]
         private string name = string.Empty;
 
-        [DataType(DataType.Url)]
+        [Url]
         [ObservableProperty]
         private string? url;
 
-        
-        [ForeignKey("FTPConnection")]
-        public int FTPConnectionId { get; set; }
+        #region Navigation properties
+
         public FTPConnection? FTPConnection { get; set; }
+
+        public SQLConnection? SQLConnection { get; set; }
+
+        #endregion
     }
 }

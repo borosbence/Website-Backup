@@ -18,11 +18,11 @@ using WebBackup.WPF.ViewModels;
 namespace WebBackup.WPF.Views
 {
     /// <summary>
-    /// Interaction logic for SiteTreeControl.xaml
+    /// Interaction logic for WebsitesControl.xaml
     /// </summary>
-    public partial class SiteTreeControl : UserControl
+    public partial class WebsitesControl : UserControl
     {
-        public SiteTreeControl()
+        public WebsitesControl()
         {
             DataContext = Ioc.Default.GetRequiredService<WebsitesViewModel>();
             InitializeComponent();
