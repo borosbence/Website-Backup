@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="WebBackup.WPF.Views.WebsitesControl"
+﻿<UserControl x:Class="WebBackup.WPF.Views.WebsitesTreeControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -22,6 +22,24 @@
                     <TextBlock Text="SQL"/>
                 </HierarchicalDataTemplate>
             </TreeView.Resources>
+            <TreeView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="New Website" />
+                    <MenuItem Header="Edit" />
+                    <MenuItem Header="Delete" />
+                    <Separator />
+                    <MenuItem >
+                        <MenuItem.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xe710;" FontFamily="{StaticResource Segoe Fluent Icons}"/>
+                                <TextBlock>Add</TextBlock>
+                            </StackPanel>
+                        </MenuItem.Header>
+                        <MenuItem Header="New FTP Connection"/>
+                        <MenuItem Header="New SQL Connection"/>
+                    </MenuItem>
+                </ContextMenu>
+            </TreeView.ContextMenu>
         </TreeView>
     </Grid>
 </UserControl>

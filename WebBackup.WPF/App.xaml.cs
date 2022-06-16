@@ -30,7 +30,6 @@ namespace WebBackup.WPF
             var serviceprovider = ConfigureServices();
             Ioc.Default.ConfigureServices(serviceprovider);
 
-
             InitializeComponent();
         }
 
