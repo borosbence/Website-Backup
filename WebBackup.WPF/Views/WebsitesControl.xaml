@@ -6,40 +6,22 @@
              xmlns:local="clr-namespace:WebBackup.WPF.Views"
              xmlns:vm="clr-namespace:WebBackup.WPF.ViewModels"
              xmlns:model="clr-namespace:WebBackup.WPF.Models"
-             xmlns:conv="clr-namespace:WebBackup.WPF.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=vm:WebsitesViewModel, IsDesignTimeCreatable=False}">
-    <UserControl.Resources>
-        <conv:ObjectToVisibilityConverter x:Key="conv" />
-
-        <HierarchicalDataTemplate x:Name="tvTmpl" DataType="{x:Type model:Website}">
-            <TreeViewItem Header="{Binding Name}">
-                <TreeViewItem Header="FTP" Visibility="{Binding FTPConnection, Converter={StaticResource conv}}" />
-                <TreeViewItem Header="SQL" Visibility="{Binding FTPConnection, Converter={StaticResource conv}}"/>
-            </TreeViewItem>
-        </HierarchicalDataTemplate>
-    </UserControl.Resources>
     <Grid>
-        <!--<TreeView>
-            <TreeViewItem Header="Websites">
-                <TreeViewItem  Header="1">
-                    <TreeViewItem Header="1.1"/>
-                </TreeViewItem>
-                <TreeViewItem  Header="2"/>
-            </TreeViewItem>
-        </TreeView>-->
-
-        <TreeView>
-            <TreeViewItem Header="Websites" ItemsSource="{Binding Websites}">
-                <TreeViewItem.Resources>
-                    <HierarchicalDataTemplate x:Name="tvTmpl" DataType="{x:Type model:Website}">
-                        <TextBlock Text="{Binding Name}">
-                        </TextBlock>
-                    </HierarchicalDataTemplate>
-                </TreeViewItem.Resources>
-            </TreeViewItem>
+        <TreeView ItemsSource="{Binding Websites}">
+            <TreeView.Resources>
+                <HierarchicalDataTemplate DataType="{x:Type model:Website}" ItemsSource="{Binding Connections}">
+                    <TextBlock Text="{Binding Name}"/>
+                </HierarchicalDataTemplate>
+                <HierarchicalDataTemplate DataType="{x:Type model:FTPConnection}">
+                    <TextBlock Text="FTP"/>
+                </HierarchicalDataTemplate>
+                <HierarchicalDataTemplate DataType="{x:Type model:SQLConnection}">
+                    <TextBlock Text="SQL"/>
+                </HierarchicalDataTemplate>
+            </TreeView.Resources>
         </TreeView>
-        
     </Grid>
 </UserControl>
