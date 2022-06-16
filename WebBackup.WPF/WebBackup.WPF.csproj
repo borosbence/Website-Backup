@@ -60,4 +60,11 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Page Update="Resources\Themes\DarkTheme.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+
 </Project>
