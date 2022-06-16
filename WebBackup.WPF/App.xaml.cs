@@ -3,9 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using WebBackup.WPF.Data;
 using WebBackup.WPF.Models;
@@ -23,12 +21,16 @@ namespace WebBackup.WPF
 
         public App()
         {
+            // TODO: For testing locales
+            // Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("de-DE");
             Config = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
                 .Build();
 
             var serviceprovider = ConfigureServices();
             Ioc.Default.ConfigureServices(serviceprovider);
+
+
             InitializeComponent();
         }
 

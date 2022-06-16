@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WebBackup.WPF.Views"
+        xmlns:loc="clr-namespace:WebBackup.WPF.Resources.Locales"
         mc:Ignorable="d"
         x:Name="mainWindow"
         Title="MainWindow" Height="450" Width="800" 
@@ -12,7 +13,7 @@
         <Menu DockPanel.Dock="Top">
             <MenuItem>
                 <MenuItem.Header>
-                    <TextBlock Text="File" />
+                    <TextBlock Text="{x:Static loc:Strings.File}" />
                 </MenuItem.Header>
             </MenuItem>
             <MenuItem>
@@ -38,7 +39,7 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" MinWidth="5"/>
             </Grid.ColumnDefinitions>
-            <local:WebsitesControl Grid.Column="0" />
+            <local:WebsiteTreeControl Grid.Column="0" />
             <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch"
                           ResizeBehavior="PreviousAndNext" />
             <local:FileBrowserControl Grid.Column="2" />
