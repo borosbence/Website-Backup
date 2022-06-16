@@ -7,13 +7,12 @@ namespace WebBackup.WPF.Data
     {
         public WBContext CreateDbContext(string[] args)
         {
-            var optionsBuilder = new DbContextOptionsBuilder<WBContext>();
             //string connectionString = ConfigurationManager.ConnectionStrings["WebBackupDB"].ConnectionString;
             string connectionString = @"Data Source=D:\Bence\Dokumentumok\Visual Studio 2022\Repos\borosbence\Website-Backup\Database\webbackup.db";
-            optionsBuilder.UseSqlite(connectionString);
+            var options = new DbContextOptionsBuilder<WBContext>().UseSqlite(connectionString).Options;
 
             //return Ioc.Default.GetService<WebBackupContext>();
-            return new WBContext(optionsBuilder.Options);
+            return new WBContext(options);
         }
     }
 }

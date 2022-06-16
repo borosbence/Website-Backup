@@ -1,20 +1,16 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WebBackup.WPF.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using WebBackup.WPF.Data;
 using Microsoft.Extensions.Configuration;
+using WebBackup.WPF.Models;
 
 namespace WebBackup.Tests
 {
     [TestClass()]
     public class WebsiteRepositoryTests
     {
-        private WebsiteRepository _repo;
+        private readonly IGenericRepository<Website> _repository;
 
         public WebsiteRepositoryTests()
         {
@@ -23,16 +19,24 @@ namespace WebBackup.Tests
 
             var options = new DbContextOptionsBuilder<WBContext>().UseSqlite(connectionString).Options;
             var context = new WBContext(options);
-            _repo = new WebsiteRepository(context);
+            _repository = new GenericRepository<Website, WBContext>(context);
         }
 
         [TestMethod()]
-        public void GetAllTest()
+        public void GetAllCountTest()
         {
-            var list = _repo.GetAll().Result;
+            var list = _repository.GetAll().Result;
             int result = list.Count;
 
             Assert.AreEqual(2, result);
+        }
+
+        [TestMethod()]
+        public void GetAllWithNavPropertyTest()
+        {
+            var first = _repository.GetAll(x => x.FTPConnection).Result.First();
+
+            Assert.IsNotNull(first.FTPConnection);
         }
     }
 }
