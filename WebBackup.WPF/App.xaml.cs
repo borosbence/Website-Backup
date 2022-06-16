@@ -50,7 +50,7 @@ namespace WebBackup.WPF
 
         #region Single Instance
         private static Mutex _mutex;
-        protected override void OnStartup(StartupEventArgs e)
+        private void checkMutex()
         {
             const string appName = "Website Backup";
             _mutex = new Mutex(true, appName, out bool createdNew);
@@ -58,8 +58,38 @@ namespace WebBackup.WPF
             {
                 Current.Shutdown();
             }
-            base.OnStartup(e);
         }
         #endregion
+
+        #region Theming
+        // irrelevant until set
+        private string _activeSkin = string.Empty;
+        /// <summary>
+        /// Application Active skin name from ResourceDictionary 'SkinName'
+        /// </summary>
+        public string ActiveSkin
+        {
+            get => _activeSkin;
+            set
+            {
+                if (_activeSkin.Equals(value))
+                {
+                    return;
+                }
+                _activeSkin = value;
+                SkinResourceDictionary.ChangeSkin(_activeSkin);
+            }
+        }
+
+        #endregion
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            checkMutex();
+
+            ActiveSkin = "Default";
+
+            base.OnStartup(e);
+        }
     }
 }

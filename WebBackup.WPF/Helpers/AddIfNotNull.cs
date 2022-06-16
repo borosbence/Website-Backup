@@ -2,7 +2,7 @@
 
 namespace WebBackup.WPF
 {
-    public static class MyExtensions
+    public static class Helpers
     {
         public static void AddIfNotNull<T>(this IList<T> list, T item)
         {
