@@ -26,6 +26,11 @@
                     <TextBlock Text="Help" />
                 </MenuItem.Header>
             </MenuItem>
+            <MenuItem Click="MenuItem_Click">
+                <MenuItem.Header>
+                    <TextBlock Text="Change Skin" />
+                </MenuItem.Header>
+            </MenuItem>
         </Menu>
         <StatusBar DockPanel.Dock="Bottom">
             <StatusBarItem>

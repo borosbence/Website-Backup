@@ -61,7 +61,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Page Update="Resources\Themes\DarkTheme.xaml">
+    <Page Update="Resources\Skins\Dark.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

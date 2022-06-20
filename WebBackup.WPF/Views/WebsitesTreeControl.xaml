@@ -13,7 +13,21 @@
         <TreeView ItemsSource="{Binding Websites}">
             <TreeView.Resources>
                 <HierarchicalDataTemplate DataType="{x:Type model:Website}" ItemsSource="{Binding Connections}">
-                    <TextBlock Text="{Binding Name}"/>
+                    <StackPanel>
+                        <TextBlock Text="{Binding Name}" />
+                        <StackPanel.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Edit" />
+                                <MenuItem Header="Delete" />
+                                <Separator />
+                                <MenuItem Header="Add">
+                                    <MenuItem Header="New FTP Connection"/>
+                                    <MenuItem Header="New SQL Connection"/>
+                                </MenuItem>
+                            </ContextMenu>
+                        </StackPanel.ContextMenu>
+                    </StackPanel>
+
                 </HierarchicalDataTemplate>
                 <HierarchicalDataTemplate DataType="{x:Type model:FTPConnection}">
                     <TextBlock Text="FTP"/>
@@ -21,22 +35,17 @@
                 <HierarchicalDataTemplate DataType="{x:Type model:SQLConnection}">
                     <TextBlock Text="SQL"/>
                 </HierarchicalDataTemplate>
+
             </TreeView.Resources>
             <TreeView.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="New Website" />
-                    <MenuItem Header="Edit" />
-                    <MenuItem Header="Delete" />
-                    <Separator />
                     <MenuItem >
                         <MenuItem.Header>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="&#xe710;" FontFamily="{StaticResource Segoe Fluent Icons}"/>
-                                <TextBlock>Add</TextBlock>
+                                <TextBlock>New Website</TextBlock>
                             </StackPanel>
                         </MenuItem.Header>
-                        <MenuItem Header="New FTP Connection"/>
-                        <MenuItem Header="New SQL Connection"/>
                     </MenuItem>
                 </ContextMenu>
             </TreeView.ContextMenu>

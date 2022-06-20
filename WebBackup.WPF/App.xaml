@@ -8,8 +8,8 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Resources/Fonts/Fonts.xaml" />
                 
-                <local:SkinResourceDictionary SkinName="Dark" Source="/Resources/Themes/DarkTheme.xaml" />
-                <local:SkinResourceDictionary SkinName="Default" Source="/Resources/Themes/DefaultTheme.xaml" />
+                <local:SkinResourceDictionary SkinName="Dark" Source="/Resources/Skins/Dark.xaml" />
+                <local:SkinResourceDictionary SkinName="Default" Source="/Resources/Skins/Default.xaml" />
                 
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

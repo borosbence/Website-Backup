@@ -61,8 +61,8 @@ namespace WebBackup.WPF
         }
         #endregion
 
-        #region Theming
-        // irrelevant until set
+        #region XAML skins
+        
         private string _activeSkin = string.Empty;
         /// <summary>
         /// Application Active skin name from ResourceDictionary 'SkinName'
@@ -87,7 +87,8 @@ namespace WebBackup.WPF
         {
             checkMutex();
 
-            ActiveSkin = "Default";
+            ActiveSkin = Config.GetSection("Skin").Value;
+            // TODO: throw error if empty
 
             base.OnStartup(e);
         }

@@ -19,12 +19,17 @@ namespace WebBackup.WPF.Views
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly App app = App.Current as App;
         public MainWindow()
         {
-            // TODO: change skin runtime
-            // app.ActiveSkin = "Dark";
+            
             InitializeComponent();
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            // TODO: change skin runtime
+            App app = App.Current as App;
+            app.ActiveSkin = app.ActiveSkin == "Dark" ? "Default" : "Dark";
         }
     }
 }
