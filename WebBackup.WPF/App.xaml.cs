@@ -22,7 +22,7 @@ namespace WebBackup.WPF
         public App()
         {
             // TODO: For testing locales
-            // Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("de-DE");
+            Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-US");
             Config = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
                 .Build();
@@ -49,8 +49,8 @@ namespace WebBackup.WPF
         }
 
         #region Single Instance
-        private static Mutex _mutex;
-        private void checkMutex()
+        private static Mutex? _mutex = null;
+        private static void CheckMutex()
         {
             const string appName = "Website Backup";
             _mutex = new Mutex(true, appName, out bool createdNew);
@@ -85,7 +85,7 @@ namespace WebBackup.WPF
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            checkMutex();
+            CheckMutex();
 
             // TODO: throw error if empty
             // ActiveSkin = Config.GetSection("Skin").Value;

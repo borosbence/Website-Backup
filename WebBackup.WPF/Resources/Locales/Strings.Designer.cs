@@ -61,11 +61,110 @@ namespace WebBackup.WPF.Resources.Locales {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add.
+        /// </summary>
+        public static string Add {
+            get {
+                return ResourceManager.GetString("Add", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete FTP connection.
+        /// </summary>
+        public static string DeleteFTP {
+            get {
+                return ResourceManager.GetString("DeleteFTP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete SQL connection.
+        /// </summary>
+        public static string DeleteSQL {
+            get {
+                return ResourceManager.GetString("DeleteSQL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete website.
+        /// </summary>
+        public static string DeleteWebsite {
+            get {
+                return ResourceManager.GetString("DeleteWebsite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit FTP connection.
+        /// </summary>
+        public static string EditFTP {
+            get {
+                return ResourceManager.GetString("EditFTP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit SQL connection.
+        /// </summary>
+        public static string EditSQL {
+            get {
+                return ResourceManager.GetString("EditSQL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit website.
+        /// </summary>
+        public static string EditWebsite {
+            get {
+                return ResourceManager.GetString("EditWebsite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to File.
         /// </summary>
         public static string File {
             get {
                 return ResourceManager.GetString("File", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New FTP connection.
+        /// </summary>
+        public static string NewFTP {
+            get {
+                return ResourceManager.GetString("NewFTP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New SQL connection.
+        /// </summary>
+        public static string NewSQL {
+            get {
+                return ResourceManager.GetString("NewSQL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New website.
+        /// </summary>
+        public static string NewWebsite {
+            get {
+                return ResourceManager.GetString("NewWebsite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test connection.
+        /// </summary>
+        public static string TestConnection {
+            get {
+                return ResourceManager.GetString("TestConnection", resourceCulture);
             }
         }
     }

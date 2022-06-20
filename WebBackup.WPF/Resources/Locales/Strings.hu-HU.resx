@@ -120,4 +120,37 @@
   <data name="File" xml:space="preserve">
     <value>Fájl</value>
   </data>
+  <data name="NewWebsite" xml:space="preserve">
+    <value>Új weblap</value>
+  </data>
+  <data name="EditWebsite" xml:space="preserve">
+    <value>Weblap szerkesztése</value>
+  </data>
+  <data name="DeleteWebsite" xml:space="preserve">
+    <value>Weblap törlése</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>Hozzáadás</value>
+  </data>
+  <data name="NewFTP" xml:space="preserve">
+    <value>Új FTP kapcsolat</value>
+  </data>
+  <data name="NewSQL" xml:space="preserve">
+    <value>Új SQL kapcsolat</value>
+  </data>
+  <data name="TestConnection" xml:space="preserve">
+    <value>Kapcsolat tesztelése</value>
+  </data>
+  <data name="EditFTP" xml:space="preserve">
+    <value>FTP kapcsolat szerkesztése</value>
+  </data>
+  <data name="DeleteFTP" xml:space="preserve">
+    <value>FTP kapcsolat törlése</value>
+  </data>
+  <data name="EditSQL" xml:space="preserve">
+    <value>SQL kapcsolat szerkesztése</value>
+  </data>
+  <data name="DeleteSQL" xml:space="preserve">
+    <value>SQL kapcsolat törlése</value>
+  </data>
 </root>

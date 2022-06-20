@@ -120,4 +120,37 @@
   <data name="File" xml:space="preserve">
     <value>File</value>
   </data>
+  <data name="NewWebsite" xml:space="preserve">
+    <value>New website</value>
+  </data>
+  <data name="EditWebsite" xml:space="preserve">
+    <value>Edit website</value>
+  </data>
+  <data name="DeleteWebsite" xml:space="preserve">
+    <value>Delete website</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="NewFTP" xml:space="preserve">
+    <value>New FTP connection</value>
+  </data>
+  <data name="NewSQL" xml:space="preserve">
+    <value>New SQL connection</value>
+  </data>
+  <data name="TestConnection" xml:space="preserve">
+    <value>Test connection</value>
+  </data>
+  <data name="EditFTP" xml:space="preserve">
+    <value>Edit FTP connection</value>
+  </data>
+  <data name="DeleteFTP" xml:space="preserve">
+    <value>Delete FTP connection</value>
+  </data>
+  <data name="EditSQL" xml:space="preserve">
+    <value>Edit SQL connection</value>
+  </data>
+  <data name="DeleteSQL" xml:space="preserve">
+    <value>Delete SQL connection</value>
+  </data>
 </root>

@@ -39,9 +39,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Resources\Locales\Strings.de-DE.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
     <EmbeddedResource Update="Resources\Locales\Strings.hu-HU.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
