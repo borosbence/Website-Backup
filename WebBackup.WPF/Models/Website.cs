@@ -20,14 +20,12 @@ namespace WebBackup.WPF.Models
         private string? url;
 
         #region Navigation properties
-
         public FTPConnection? FTPConnection { get; set; }
 
         public SQLConnection? SQLConnection { get; set; }
 
         [NotMapped]
         public ObservableCollection<Connection> Connections { get; set; } = new ObservableCollection<Connection>();
-
         #endregion
     }
 }

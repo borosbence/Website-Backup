@@ -25,7 +25,7 @@ namespace WebBackup.Tests
         [TestMethod()]
         public void GetAllCountTest()
         {
-            var list = _repository.GetAll().Result;
+            var list = _repository.GetAllAsync().Result;
             int result = list.Count;
 
             Assert.AreEqual(2, result);
@@ -34,7 +34,7 @@ namespace WebBackup.Tests
         [TestMethod()]
         public void GetAllWithNavPropertyTest()
         {
-            var first = _repository.GetAll(x => x.FTPConnection).Result.First();
+            var first = _repository.GetAllAsync(x => x.FTPConnection).Result.First();
 
             Assert.IsNotNull(first.FTPConnection);
         }

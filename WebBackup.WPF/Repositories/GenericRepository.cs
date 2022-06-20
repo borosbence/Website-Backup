@@ -20,12 +20,12 @@ namespace WebBackup.WPF.Repositories
             _context = context;
         }
 
-        public async Task<List<TEntity>> GetAll()
+        public async Task<List<TEntity>> GetAllAsync()
         {
             return await _context.Set<TEntity>().ToListAsync();
         }
 
-        public async Task<List<TEntity>> GetAll(params Expression<Func<TEntity, object>>[] includes)
+        public async Task<List<TEntity>> GetAllAsync(params Expression<Func<TEntity, object>>[] includes)
         {
             IQueryable<TEntity> query = _context.Set<TEntity>();
 
@@ -37,23 +37,23 @@ namespace WebBackup.WPF.Repositories
             return await query.ToListAsync();
         }
 
-        public async Task<TEntity?> GetById(object id)
+        public async Task<TEntity?> GetByIdAsync(object id)
         {
             return await _context.Set<TEntity>().FindAsync(id);
         }
 
-        public async Task Insert(TEntity entity)
+        public async Task InsertAsync(TEntity entity)
         {
             _context.Set<TEntity>().Add(entity);
             await _context.SaveChangesAsync();
         }
 
-        public async Task Update(TEntity entity)
+        public async Task UpdateAsync(TEntity entity)
         {
             _context.Set<TEntity>().Update(entity);
             await _context.SaveChangesAsync();
         }
-        public async Task Delete(TEntity entity)
+        public async Task DeleteAsync(TEntity entity)
         {
             _context.Set<TEntity>().Remove(entity);
             await _context.SaveChangesAsync();

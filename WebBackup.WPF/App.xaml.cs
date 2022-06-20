@@ -87,8 +87,12 @@ namespace WebBackup.WPF
         {
             checkMutex();
 
-            ActiveSkin = Config.GetSection("Skin").Value;
             // TODO: throw error if empty
+            // ActiveSkin = Config.GetSection("Skin").Value;
+
+            // TODO: create DB if not exist
+            // var context = Ioc.Default.GetRequiredService<WBContext>();
+            // context.Database.Migrate();
 
             base.OnStartup(e);
         }
