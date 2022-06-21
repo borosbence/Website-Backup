@@ -9,27 +9,9 @@
         Title="MainWindow" Height="450" Width="800" 
         WindowStartupLocation="CenterScreen">
     <DockPanel>
-        <Menu DockPanel.Dock="Top">
-            <MenuItem>
-                <MenuItem.Header>
-                    <TextBlock Text="{DynamicResource File}" />
-                </MenuItem.Header>
-            </MenuItem>
-            <MenuItem>
-                <MenuItem.Header>
-                    <TextBlock Text="Options" />
-                </MenuItem.Header>
-            </MenuItem>
-            <MenuItem>
-                <MenuItem.Header>
-                    <TextBlock Text="Help" />
-                </MenuItem.Header>
-            </MenuItem>
-            <MenuItem Click="MenuItem_Click">
-                <MenuItem.Header>
-                    <TextBlock Text="Change Skin" />
-                </MenuItem.Header>
-            </MenuItem>
+        <Menu DockPanel.Dock="Top" >
+            <MenuItem Header="{DynamicResource File}" />
+            <MenuItem Header="Change Skin" Click="MenuItem_Click" />
         </Menu>
         <StatusBar DockPanel.Dock="Bottom">
             <StatusBarItem>

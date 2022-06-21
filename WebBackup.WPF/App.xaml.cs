@@ -83,19 +83,21 @@ namespace WebBackup.WPF
 
         protected override void OnStartup(StartupEventArgs e)
         {
+            base.OnStartup(e);
+
+            // Check if program is running
             CheckMutex();
+
+            // Create database file if not exist
+            var context = Ioc.Default.GetRequiredService<WBContext>();
+            context.Database.EnsureCreatedAsync();
+
+            // Set default skin
+            var skinConfig = Config.GetSection("Skin");
+            ActiveSkin = skinConfig.Exists() ? skinConfig.Value : "Default";
+
             // Set default UI language
             LanguageSwitcher.SetDefaultLanguage(Config);
-
-
-            // TODO: throw error if empty
-            ActiveSkin = Config.GetSection("Skin").Value;
-
-            // TODO: create DB if not exist
-            // var context = Ioc.Default.GetRequiredService<WBContext>();
-            // context.Database.Migrate();
-
-            base.OnStartup(e);
         }
     }
 }
