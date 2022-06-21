@@ -21,8 +21,6 @@ namespace WebBackup.WPF
 
         public App()
         {
-            // TODO: For testing locales
-            Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-US");
             Config = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
                 .Build();
@@ -86,9 +84,12 @@ namespace WebBackup.WPF
         protected override void OnStartup(StartupEventArgs e)
         {
             CheckMutex();
+            // Set default UI language
+            LanguageSwitcher.SetDefaultLanguage(Config);
+
 
             // TODO: throw error if empty
-            // ActiveSkin = Config.GetSection("Skin").Value;
+            ActiveSkin = Config.GetSection("Skin").Value;
 
             // TODO: create DB if not exist
             // var context = Ioc.Default.GetRequiredService<WBContext>();

@@ -7,7 +7,8 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Resources/Fonts/Fonts.xaml" />
-                
+                <ResourceDictionary Source="/Resources/Languages/Strings.en-US.xaml" />
+
                 <local:SkinResourceDictionary SkinName="Dark" Source="/Resources/Skins/Dark.xaml" />
                 <local:SkinResourceDictionary SkinName="Default" Source="/Resources/Skins/Default.xaml" />
                 

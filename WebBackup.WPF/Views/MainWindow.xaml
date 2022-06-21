@@ -4,7 +4,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WebBackup.WPF.Views"
-        xmlns:loc="clr-namespace:WebBackup.WPF.Resources.Locales"
         mc:Ignorable="d"
         x:Name="mainWindow"
         Title="MainWindow" Height="450" Width="800" 
@@ -13,7 +12,7 @@
         <Menu DockPanel.Dock="Top">
             <MenuItem>
                 <MenuItem.Header>
-                    <TextBlock Text="{x:Static loc:Strings.File}" />
+                    <TextBlock Text="{DynamicResource File}" />
                 </MenuItem.Header>
             </MenuItem>
             <MenuItem>

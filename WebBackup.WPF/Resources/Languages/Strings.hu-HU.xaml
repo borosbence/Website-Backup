@@ -1,0 +1,16 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:s="clr-namespace:System;assembly=mscorlib">
+    <s:String x:Key="Add">Hozzáadás</s:String>
+    <s:String x:Key="DeleteFTP">FTP kapcsolat törlése</s:String>
+    <s:String x:Key="DeleteSQL">SQL kapcsolat törlése</s:String>
+    <s:String x:Key="DeleteWebsite">Weblap törlése</s:String>
+    <s:String x:Key="EditFTP">FTP kapcsolat szerkesztése</s:String>
+    <s:String x:Key="EditSQL">SQL kapcsolat szerkesztése</s:String>
+    <s:String x:Key="EditWebsite">Weblap szerkesztése</s:String>
+    <s:String x:Key="File">Fájl</s:String>
+    <s:String x:Key="NewFTP">Új FTP kapcsolat</s:String>
+    <s:String x:Key="NewSQL">Új SQL kapcsolat</s:String>
+    <s:String x:Key="NewWebsite">Új weblap</s:String>
+    <s:String x:Key="TestConnection">Kapcsolat tesztelése</s:String>
+</ResourceDictionary>
