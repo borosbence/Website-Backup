@@ -17,7 +17,7 @@ namespace WebBackup.WPF
     /// </summary>
     public partial class App : Application
     {
-        public static IConfiguration Config { get; private set; }
+        public static IConfiguration? Config { get; private set; }
 
         public App()
         {
@@ -42,6 +42,7 @@ namespace WebBackup.WPF
             services.AddDbContext<WBContext>(options => options.UseSqlite(connectionString));
             services.AddScoped<IGenericRepository<Website>, GenericRepository<Website, WBContext>>();
             services.AddTransient<WebsitesViewModel>();
+            services.AddTransient<WebsiteFormViewModel>();
 
             return services.BuildServiceProvider();
         }

@@ -36,8 +36,12 @@ namespace WebBackup.WPF.Repositories
 
             return await query.ToListAsync();
         }
+        public async Task<bool> ExistsAsync(int id)
+        {
+            return await _context.Set<TEntity>().AnyAsync(x => x.Id == id);
+        }
 
-        public async Task<TEntity?> GetByIdAsync(object id)
+        public async Task<TEntity?> GetByIdAsync(int id)
         {
             return await _context.Set<TEntity>().FindAsync(id);
         }
@@ -58,5 +62,6 @@ namespace WebBackup.WPF.Repositories
             _context.Set<TEntity>().Remove(entity);
             await _context.SaveChangesAsync();
         }
+
     }
 }

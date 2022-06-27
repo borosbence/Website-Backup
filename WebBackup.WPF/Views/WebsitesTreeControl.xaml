@@ -21,8 +21,17 @@
     </UserControl.Resources>
     <Grid>
         <TreeView ItemsSource="{Binding Websites}">
+            <TreeView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="{DynamicResource NewWebsite}" Command="{Binding NewWebsiteCommand}">
+                        <MenuItem.Icon>
+                            <TextBlock Text="&#xe710;" FontFamily="{StaticResource Segoe Fluent Icons}"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </ContextMenu>
+            </TreeView.ContextMenu>
+
             <TreeView.Resources>
-                
                 <HierarchicalDataTemplate DataType="{x:Type model:Website}" ItemsSource="{Binding Connections}">
                     <TextBlock Text="{Binding Name}">
                         <TextBlock.ContextMenu>
@@ -81,7 +90,7 @@
                         </TextBlock.ContextMenu>
                     </TextBlock>
                 </HierarchicalDataTemplate>
-                
+
                 <HierarchicalDataTemplate DataType="{x:Type model:SQLConnection}">
                     <TextBlock Text="SQL">
                         <TextBlock.ContextMenu>
@@ -105,17 +114,8 @@
                         </TextBlock.ContextMenu>
                     </TextBlock>
                 </HierarchicalDataTemplate>
-
             </TreeView.Resources>
-            <TreeView.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Header="{DynamicResource NewWebsite}">
-                        <MenuItem.Icon>
-                            <TextBlock Text="&#xe710;" FontFamily="{StaticResource Segoe Fluent Icons}"/>
-                        </MenuItem.Icon>
-                    </MenuItem>
-                </ContextMenu>
-            </TreeView.ContextMenu>
+            
         </TreeView>
     </Grid>
 </UserControl>

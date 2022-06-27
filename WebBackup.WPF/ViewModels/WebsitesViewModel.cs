@@ -1,11 +1,13 @@
-﻿using System.Collections.ObjectModel;
+﻿using CommunityToolkit.Mvvm.Input;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using WebBackup.WPF.Models;
 using WebBackup.WPF.Repositories;
+using WebBackup.WPF.Views;
 
 namespace WebBackup.WPF.ViewModels
 {
-    public class WebsitesViewModel
+    public partial class WebsitesViewModel
     {
         public WebsitesViewModel(IGenericRepository<Website> repository)
         {
@@ -25,6 +27,14 @@ namespace WebBackup.WPF.ViewModels
                 website.Connections.AddIfNotNull(website.FTPConnection);
                 website.Connections.AddIfNotNull(website.SQLConnection);
             }
+        }
+
+        [ICommand]
+        private void NewWebsite()
+        {
+            // TODO: MVVM approach
+            var window = new WebsiteFormWindow();
+            window.ShowDialog();
         }
     }
 }

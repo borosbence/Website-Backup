@@ -12,6 +12,7 @@ namespace WebBackup.WPF.Models
         public int Id { get; set; }
 
         [Required]
+        [MinLength(1)]
         [ObservableProperty]
         private string name = string.Empty;
 
