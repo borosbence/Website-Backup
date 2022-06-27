@@ -1,22 +1,27 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using System.Threading.Tasks;
 using WebBackup.WPF.Models;
 using WebBackup.WPF.Repositories;
 
 namespace WebBackup.WPF.ViewModels
 {
-    public partial class WebsiteFormViewModel : ObservableObject
+    public partial class WebsiteFormViewModel : ObservableRecipient
     {
         private readonly IGenericRepository<Website> _repository;
-        public WebsiteFormViewModel(IGenericRepository<Website> repository, Website? p_website = null)
+        public WebsiteFormViewModel(IGenericRepository<Website> repository)
         {
             _repository = repository;
-            website = p_website ?? new Website();
+            var messenger = Messenger.Send<WebsiteRequestMessage>();
+            if (messenger.HasReceivedResponse)
+            {
+                website = messenger.Response;
+            }
         }
 
         [ObservableProperty]
-        private Website website;
+        private Website website = new();
 
         [ICommand]
         private Task SaveAsync(Website website)

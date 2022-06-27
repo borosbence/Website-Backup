@@ -20,10 +20,10 @@
         </Style>
     </UserControl.Resources>
     <Grid>
-        <TreeView ItemsSource="{Binding Websites}">
+        <TreeView ItemsSource="{Binding Websites}" SelectedItemChanged="TreeView_SelectedItemChanged">
             <TreeView.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="{DynamicResource NewWebsite}" Command="{Binding NewWebsiteCommand}">
+                    <MenuItem Header="{DynamicResource NewWebsite}" Command="{Binding ShowWebsiteCommand}" CommandParameter="new">
                         <MenuItem.Icon>
                             <TextBlock Text="&#xe710;" FontFamily="{StaticResource Segoe Fluent Icons}"/>
                         </MenuItem.Icon>
@@ -36,7 +36,7 @@
                     <TextBlock Text="{Binding Name}">
                         <TextBlock.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Header="{DynamicResource EditWebsite}">
+                                <MenuItem Header="{DynamicResource EditWebsite}" Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.ShowWebsiteCommand}">
                                     <MenuItem.Icon>
                                         <TextBlock Text="&#xe70f;" FontFamily="{StaticResource Segoe Fluent Icons}"/>
                                     </MenuItem.Icon>

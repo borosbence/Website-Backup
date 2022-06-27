@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WebBackup.WPF.Models;
 using WebBackup.WPF.ViewModels;
 
 namespace WebBackup.WPF.Views
@@ -26,6 +27,17 @@ namespace WebBackup.WPF.Views
         {
             DataContext = Ioc.Default.GetRequiredService<WebsitesViewModel>();
             InitializeComponent();
+        }
+
+        private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            var website = e.NewValue as Website;
+            var vm = this.DataContext as WebsitesViewModel;
+            if (website != null)
+            {
+                vm.SelectedWebsite = website;
+            }
+
         }
     }
 }
