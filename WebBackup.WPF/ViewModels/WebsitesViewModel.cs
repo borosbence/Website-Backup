@@ -54,6 +54,8 @@ namespace WebBackup.WPF.ViewModels
                 selectedWebsite = new();
             }
             var window = new WebsiteFormWindow();
+            // Messenger.Send(new WebsiteChangedMessage(selectedWebsite));
+
             window.ShowDialog();
         }
     }

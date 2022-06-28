@@ -7,6 +7,7 @@
         xmlns:vm="clr-namespace:WebBackup.WPF.ViewModels"
         mc:Ignorable="d"
         Title="New Website"
+        WindowStartupLocation="CenterScreen"
         d:DataContext="{d:DesignInstance Type=vm:WebsiteFormViewModel, IsDesignTimeCreatable=False}"
         SizeToContent="WidthAndHeight"
         WindowStyle="ToolWindow">

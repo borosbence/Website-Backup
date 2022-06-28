@@ -1,4 +1,5 @@
 ﻿<UserControl x:Class="WebBackup.WPF.Views.WebsitesTreeControl"
+             x:Name="WebsitesUC"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -23,7 +24,8 @@
         <TreeView ItemsSource="{Binding Websites}" SelectedItemChanged="TreeView_SelectedItemChanged">
             <TreeView.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="{DynamicResource NewWebsite}" Command="{Binding ShowWebsiteCommand}" CommandParameter="new">
+                    <MenuItem Header="{DynamicResource NewWebsite}"
+                              Command="{Binding ShowWebsiteCommand}" CommandParameter="new">
                         <MenuItem.Icon>
                             <TextBlock Text="&#xe710;" FontFamily="{StaticResource Segoe Fluent Icons}"/>
                         </MenuItem.Icon>
@@ -36,7 +38,10 @@
                     <TextBlock Text="{Binding Name}">
                         <TextBlock.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Header="{DynamicResource EditWebsite}" Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.ShowWebsiteCommand}">
+                                <!--Command="{Binding DataContext.ShowWebsiteCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"-->
+                                <!--Command="{Binding DataContext.ShowWebsiteCommand, Source={x:Reference WebsitesUC}}"-->
+                                <MenuItem Header="{DynamicResource EditWebsite}" 
+                                          Command="{Binding DataContext.ShowWebsiteCommand, Source={x:Reference WebsitesUC}}">
                                     <MenuItem.Icon>
                                         <TextBlock Text="&#xe70f;" FontFamily="{StaticResource Segoe Fluent Icons}"/>
                                     </MenuItem.Icon>

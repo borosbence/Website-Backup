@@ -13,12 +13,18 @@ namespace WebBackup.WPF.ViewModels
         public WebsiteFormViewModel(IGenericRepository<Website> repository)
         {
             _repository = repository;
+            // Messenger.Register<WebsiteFormViewModel, WebsiteChangedMessage>(this, (r, m) => r.Receive(m));
             var messenger = Messenger.Send<WebsiteRequestMessage>();
             if (messenger.HasReceivedResponse)
             {
                 website = messenger.Response;
             }
         }
+
+        //private void Receive(WebsiteChangedMessage message)
+        //{
+        //    Website = message.Value;
+        //}
 
         [ObservableProperty]
         private Website website = new();
