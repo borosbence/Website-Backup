@@ -1,0 +1,2 @@
+Add-Migration Init -Project WebBackup.Infrastructure -StartupProject WebBackup.WPF
+Update-Database -Project WebBackup.Infrastructure -StartupProject WebBackup.WPF -verbose
