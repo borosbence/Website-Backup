@@ -11,7 +11,9 @@ namespace WebBackup.WPF.Models
         [Key]
         public int Id { get; set; }
 
+        // TODO: Localize error messages
         [Required]
+        [MinLength(1)]
         [ObservableProperty]
         private string name = string.Empty;
 

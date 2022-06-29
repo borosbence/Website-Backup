@@ -15,7 +15,8 @@ namespace WebBackup.WPF.Repositories
         /// <param name="includes"></param>
         /// <returns></returns>
         Task<List<T>> GetAllAsync(params Expression<Func<T, object>>[] includes);
-        Task<T?> GetByIdAsync(object id);
+        Task<T?> GetByIdAsync(int id);
+        Task<bool> ExistsAsync(int id);
         Task InsertAsync(T entity);
         Task UpdateAsync(T entity);
         Task DeleteAsync(T entity);

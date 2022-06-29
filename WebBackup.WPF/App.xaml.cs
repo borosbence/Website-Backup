@@ -8,6 +8,7 @@ using System.Windows;
 using WebBackup.WPF.Data;
 using WebBackup.WPF.Models;
 using WebBackup.WPF.Repositories;
+using WebBackup.WPF.Services;
 using WebBackup.WPF.ViewModels;
 
 namespace WebBackup.WPF
@@ -17,12 +18,10 @@ namespace WebBackup.WPF
     /// </summary>
     public partial class App : Application
     {
-        public static IConfiguration Config { get; private set; }
+        public static IConfiguration? Config { get; private set; }
 
         public App()
         {
-            // TODO: For testing locales
-            // Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("de-DE");
             Config = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
                 .Build();
@@ -42,15 +41,20 @@ namespace WebBackup.WPF
 
             string connectionString = Config.GetConnectionString("WebBackupDB");
             services.AddDbContext<WBContext>(options => options.UseSqlite(connectionString));
+            // Scoped - Repositories
             services.AddScoped<IGenericRepository<Website>, GenericRepository<Website, WBContext>>();
+            // Singleton - Services
+            services.AddSingleton<IWindowService, WindowService>();
+            // Transienvt - ViewModels
             services.AddTransient<WebsitesViewModel>();
+            services.AddTransient<WebsiteFormViewModel>();
 
             return services.BuildServiceProvider();
         }
 
         #region Single Instance
-        private static Mutex _mutex;
-        private void checkMutex()
+        private static Mutex? _mutex = null;
+        private static void CheckMutex()
         {
             const string appName = "Website Backup";
             _mutex = new Mutex(true, appName, out bool createdNew);
@@ -85,16 +89,21 @@ namespace WebBackup.WPF
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            checkMutex();
-
-            // TODO: throw error if empty
-            // ActiveSkin = Config.GetSection("Skin").Value;
-
-            // TODO: create DB if not exist
-            // var context = Ioc.Default.GetRequiredService<WBContext>();
-            // context.Database.Migrate();
-
             base.OnStartup(e);
+
+            // Check if program is running
+            CheckMutex();
+
+            // Create database file if not exist
+            var context = Ioc.Default.GetRequiredService<WBContext>();
+            context.Database.EnsureCreatedAsync();
+
+            // Set default skin
+            var skinConfig = Config.GetSection("Skin");
+            ActiveSkin = skinConfig.Exists() ? skinConfig.Value : "Default";
+
+            // Set default UI language
+            LanguageSwitcher.SetDefaultLanguage(Config);
         }
     }
 }

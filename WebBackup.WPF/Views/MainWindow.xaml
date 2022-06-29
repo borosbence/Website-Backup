@@ -4,33 +4,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WebBackup.WPF.Views"
-        xmlns:loc="clr-namespace:WebBackup.WPF.Resources.Locales"
         mc:Ignorable="d"
         x:Name="mainWindow"
         Title="MainWindow" Height="450" Width="800" 
         WindowStartupLocation="CenterScreen">
     <DockPanel>
-        <Menu DockPanel.Dock="Top">
-            <MenuItem>
-                <MenuItem.Header>
-                    <TextBlock Text="{x:Static loc:Strings.File}" />
-                </MenuItem.Header>
-            </MenuItem>
-            <MenuItem>
-                <MenuItem.Header>
-                    <TextBlock Text="Options" />
-                </MenuItem.Header>
-            </MenuItem>
-            <MenuItem>
-                <MenuItem.Header>
-                    <TextBlock Text="Help" />
-                </MenuItem.Header>
-            </MenuItem>
-            <MenuItem Click="MenuItem_Click">
-                <MenuItem.Header>
-                    <TextBlock Text="Change Skin" />
-                </MenuItem.Header>
-            </MenuItem>
+        <Menu DockPanel.Dock="Top" >
+            <MenuItem Header="{DynamicResource File}" />
+            <MenuItem Header="Change Skin" Click="MenuItem_Click" />
         </Menu>
         <StatusBar DockPanel.Dock="Bottom">
             <StatusBarItem>

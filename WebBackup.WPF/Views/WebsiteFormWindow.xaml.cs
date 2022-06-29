@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CommunityToolkit.Mvvm.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,25 +12,19 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using WebBackup.WPF.ViewModels;
 
 namespace WebBackup.WPF.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for WebsiteFormWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class WebsiteFormWindow : Window
     {
-        public MainWindow()
+        public WebsiteFormWindow()
         {
-            
+            DataContext = Ioc.Default.GetRequiredService<WebsiteFormViewModel>();
             InitializeComponent();
-        }
-
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            // TODO: change skin runtime
-            App app = Application.Current as App;
-            app.ActiveSkin = app.ActiveSkin == "Dark" ? "Default" : "Dark";
         }
     }
 }
