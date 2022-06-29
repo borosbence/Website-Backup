@@ -48,7 +48,9 @@
                                         <TextBlock Text="&#xe70f;" FontFamily="{StaticResource Segoe Fluent Icons}"/>
                                     </MenuItem.Icon>
                                 </MenuItem>
-                                <MenuItem Header="{DynamicResource DeleteWebsite}">
+                                <MenuItem Header="{DynamicResource DeleteWebsite}"
+                                          Command="{Binding DataContext.DeleteCommand, Source={x:Reference WebsitesUC}}"
+                                          CommandParameter="{Binding DataContext.SelectedWebsite, Source={x:Reference WebsitesUC}}">
                                     <MenuItem.Icon>
                                         <TextBlock Text="&#xe74d;" FontFamily="{StaticResource Segoe Fluent Icons}"/>
                                     </MenuItem.Icon>

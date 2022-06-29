@@ -31,6 +31,29 @@ namespace WebBackup.WPF.ViewModels
         [ObservableProperty]
         private Website? selectedWebsite;
 
+
+        [ICommand]
+        private void ShowWebsite(string param)
+        {
+            if (!string.IsNullOrEmpty(param))
+            {
+                selectedWebsite = new();
+            }
+            _windowService.ShowDialog<WebsiteFormWindow>();
+        }
+
+        [ICommand]
+        private async Task DeleteAsync(Website selectedWebsite)
+        {
+            // TODO: localize
+            bool confirmed = _windowService.ConfirmDelete("Delete Website", "Confirm Delete?");
+            if (confirmed)
+            {
+                await _repository.DeleteAsync(selectedWebsite);
+                Websites.Remove(selectedWebsite);
+            }
+        }
+
         /// <summary>
         /// Load all websites from the repository.
         /// </summary>
@@ -52,7 +75,7 @@ namespace WebBackup.WPF.ViewModels
         protected override void OnActivated()
         {
             Messenger.Register<WebsitesViewModel, WebsiteRequestMessage>(this, (r, m) => r.Receive(m));
-            Messenger.Register<WebsiteChangedMessage>(this, (r,m) => Receive(m));
+            Messenger.Register<WebsiteChangedMessage>(this, (r, m) => Receive(m));
         }
 
         /// <summary>
@@ -83,16 +106,6 @@ namespace WebBackup.WPF.ViewModels
             {
                 Websites.Add(website);
             }
-        }
-
-        [ICommand]
-        private void ShowWebsite(string param)
-        {
-            if (!string.IsNullOrEmpty(param))
-            {
-                selectedWebsite = new();
-            }
-            _windowService.ShowDialog<WebsiteFormWindow>();
         }
     }
 
