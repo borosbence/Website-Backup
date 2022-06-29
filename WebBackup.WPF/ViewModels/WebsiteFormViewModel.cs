@@ -29,6 +29,8 @@ namespace WebBackup.WPF.ViewModels
         [ObservableProperty]
         private Website website = new();
 
+
+        // TODO: disabled Save button on error
         [ICommand]
         private Task SaveAsync(Website website)
         {

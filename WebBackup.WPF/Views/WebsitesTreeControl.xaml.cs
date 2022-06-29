@@ -37,7 +37,6 @@ namespace WebBackup.WPF.Views
             {
                 vm.SelectedWebsite = website;
             }
-
         }
     }
 }

@@ -13,4 +13,5 @@
     <s:String x:Key="NewSQL">Új SQL kapcsolat</s:String>
     <s:String x:Key="NewWebsite">Új weblap</s:String>
     <s:String x:Key="TestConnection">Kapcsolat tesztelése</s:String>
+    <s:String x:Key="RequiredField">Kötelező mező.</s:String>
 </ResourceDictionary>

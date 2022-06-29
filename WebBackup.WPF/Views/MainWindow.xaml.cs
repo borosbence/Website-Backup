@@ -28,7 +28,7 @@ namespace WebBackup.WPF.Views
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
             // TODO: change skin runtime
-            App app = App.Current as App;
+            App app = Application.Current as App;
             app.ActiveSkin = app.ActiveSkin == "Dark" ? "Default" : "Dark";
         }
     }

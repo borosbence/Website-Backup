@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using WebBackup.WPF.Models;
 using WebBackup.WPF.Repositories;
+using WebBackup.WPF.Services;
 using WebBackup.WPF.Views;
 
 namespace WebBackup.WPF.ViewModels
@@ -13,18 +14,24 @@ namespace WebBackup.WPF.ViewModels
     public partial class WebsitesViewModel : ObservableRecipient, IRecipient<WebsiteRequestMessage>
     {
         private readonly IGenericRepository<Website> _repository;
-        public WebsitesViewModel(IGenericRepository<Website> repository)
+        private readonly IWindowService _windowService;
+
+        public WebsitesViewModel(IGenericRepository<Website> repository, IWindowService windowService)
         {
             _repository = repository;
-            Task.Run(async () => await LoadData()).Wait();
+            _windowService = windowService;
+            LoadData();
             OnActivated();
         }
 
         public ObservableCollection<Website> Websites { get; set; } = new ObservableCollection<Website>();
 
         [ObservableProperty]
-        private Website selectedWebsite;
+        private Website? selectedWebsite;
 
+        /// <summary>
+        /// Load all websites from the repository.
+        /// </summary>
         private async Task LoadData()
         {
             Websites = new ObservableCollection<Website>(await _repository.GetAllAsync(x => x.FTPConnection, y => y.SQLConnection));
@@ -35,11 +42,17 @@ namespace WebBackup.WPF.ViewModels
             }
         }
 
+        /// <summary>
+        /// Register WebsitesViewModel messenger, when receiving request from WebsiteFormWindow.
+        /// </summary>
         protected override void OnActivated()
         {
             Messenger.Register<WebsitesViewModel, WebsiteRequestMessage>(this, (r, m) => r.Receive(m));
         }
 
+        /// <summary>
+        /// Send the selected Website data to the Form.
+        /// </summary>
         public void Receive(WebsiteRequestMessage message)
         {
             message.Reply(selectedWebsite);
@@ -48,15 +61,12 @@ namespace WebBackup.WPF.ViewModels
         [ICommand]
         private void ShowWebsite(string param)
         {
-            // TODO: MVVM approach
             if (!string.IsNullOrEmpty(param))
             {
                 selectedWebsite = new();
             }
-            var window = new WebsiteFormWindow();
+            _windowService.ShowDialog<WebsiteFormWindow>();
             // Messenger.Send(new WebsiteChangedMessage(selectedWebsite));
-
-            window.ShowDialog();
         }
     }
 
