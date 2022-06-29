@@ -2,9 +2,9 @@
 using WebBackup.WPF.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using WebBackup.Domain;
-using WebBackup.Infrastructure;
-using WebBackup.Domain.Repositories;
+using WebBackup.Core.Repositories;
+using WebBackup.Core;
+using WebBackup.Infrastructure.Data;
 
 namespace WebBackup.Tests
 {
