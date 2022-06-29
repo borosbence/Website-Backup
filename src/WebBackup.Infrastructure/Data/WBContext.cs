@@ -16,8 +16,12 @@ namespace WebBackup.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<FTPConnection>().HasIndex(x => x.WebsiteId).IsUnique();
-            modelBuilder.Entity<SQLConnection>().HasIndex(x => x.WebsiteId).IsUnique();
+            modelBuilder.Entity<FTPConnection>()
+                .HasIndex(x => x.WebsiteId)
+                .IsUnique();
+            modelBuilder.Entity<SQLConnection>()
+                .HasIndex(x => x.WebsiteId)
+                .IsUnique();
             modelBuilder.Seed();
         }
     }

@@ -19,23 +19,21 @@ namespace WebBackup.WPF.Repositories
 
         public async Task<List<TEntity>> GetAllAsync()
         {
-            return await _context.Set<TEntity>().ToListAsync();
+            return await _context.Set<TEntity>().AsNoTracking().ToListAsync();
         }
 
         public async Task<List<TEntity>> GetAllAsync(params Expression<Func<TEntity, object>>[] includes)
         {
-            IQueryable<TEntity> query = _context.Set<TEntity>();
-
+            IQueryable<TEntity> query = _context.Set<TEntity>().AsNoTracking();
             foreach (var include in includes)
             {
                 query = query.Include(include);
             }
-
             return await query.ToListAsync();
         }
         public async Task<bool> ExistsAsync(int id)
         {
-            return await _context.Set<TEntity>().AnyAsync(x => x.Id == id);
+            return await _context.Set<TEntity>().AsNoTracking().AnyAsync(x => x.Id == id);
         }
 
         public async Task<TEntity?> GetByIdAsync(int id)
@@ -51,7 +49,16 @@ namespace WebBackup.WPF.Repositories
 
         public async Task UpdateAsync(TEntity entity, params string[] excludeProperties)
         {
-            _context.Set<TEntity>().Update(entity);
+            try
+            {
+                _context.Set<TEntity>().Update(entity);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+            
             foreach (var property in excludeProperties)
             {
                 _context.Entry(entity).Property(property).IsModified = false;
@@ -63,6 +70,5 @@ namespace WebBackup.WPF.Repositories
             _context.Set<TEntity>().Remove(entity);
             await _context.SaveChangesAsync();
         }
-
     }
 }

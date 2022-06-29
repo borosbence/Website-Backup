@@ -41,13 +41,17 @@ namespace WebBackup.WPF
             var services = new ServiceCollection();
 
             string connectionString = Config.GetConnectionString("WebBackupDB");
-            services.AddDbContext<WBContext>(options => 
-                options.UseSqlite(connectionString, x => x.MigrationsAssembly("WebBackup.Infrastructure")));
+            // DbContext
+            services.AddDbContext<WBContext>(options =>
+            {
+                options.UseSqlite(connectionString, x => x.MigrationsAssembly("WebBackup.Infrastructure"));
+                // options.EnableSensitiveDataLogging();
+            });
             // Scoped - Repositories
             services.AddScoped<IGenericRepository<Website>, GenericRepository<Website, WBContext>>();
             // Singleton - Services
             services.AddSingleton<IWindowService, WindowService>();
-            // Transienvt - ViewModels
+            // Transient - ViewModels
             services.AddTransient<WebsitesViewModel>();
             services.AddTransient<WebsiteFormViewModel>();
 

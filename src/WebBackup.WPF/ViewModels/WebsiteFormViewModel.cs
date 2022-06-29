@@ -13,7 +13,6 @@ namespace WebBackup.WPF.ViewModels
         public WebsiteFormViewModel(IGenericRepository<Website> repository)
         {
             _repository = repository;
-            // Messenger.Register<WebsiteFormViewModel, WebsiteChangedMessage>(this, (r, m) => r.Receive(m));
             var messenger = Messenger.Send<WebsiteRequestMessage>();
             if (messenger.HasReceivedResponse)
             {
@@ -24,33 +23,29 @@ namespace WebBackup.WPF.ViewModels
         [ObservableProperty]
         private WebsiteForm? websiteForm;
 
-        //private void Receive(WebsiteChangedMessage message)
-        //{
-        //    Website = message.Value;
-        //}
-
         // TODO: disabled Save button on error
         [ICommand]
-        private Task SaveAsync(WebsiteForm websiteForm)
+        private async Task SaveAsync(WebsiteForm websiteForm)
         {
             if (websiteForm.HasErrors)
             {
-                return Task.CompletedTask;
+                return;
             }
-            Website website = new Website { Name = websiteForm.Name, Url = websiteForm.Url };
+            Website website = new() { Name = websiteForm.Name, Url = websiteForm.Url };
 
-            bool exists = _repository.ExistsAsync(websiteForm.Id).Result;
+            bool exists =  await _repository.ExistsAsync(websiteForm.Id);
             if (exists)
             {
+                // TODO: keep tracking the entitiy
                 website.Id = websiteForm.Id;
-                string[] excludeProperties = { "FTPConnection", "SQLConnection" };
-                return _repository.UpdateAsync(website, excludeProperties);
+                await _repository.UpdateAsync(website);
             }
             else
             {
-                return _repository.InsertAsync(website);
+                await _repository.InsertAsync(website);
             }
-            // TODO: notify main collection
+            // notify main collection
+            Messenger.Send(new WebsiteChangedMessage(website));
         }
     }
 }

@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using WebBackup.Core;
 using WebBackup.Core.Repositories;
@@ -21,6 +22,7 @@ namespace WebBackup.WPF.ViewModels
             _repository = repository;
             _windowService = windowService;
             LoadData();
+            // Task.Run(async () => await LoadData()).Wait();
             OnActivated();
         }
 
@@ -34,11 +36,13 @@ namespace WebBackup.WPF.ViewModels
         /// </summary>
         private async Task LoadData()
         {
-            Websites = new ObservableCollection<Website>(await _repository.GetAllAsync(x => x.FTPConnection, y => y.SQLConnection));
-            foreach (var website in Websites)
+            Websites.Clear();
+            var dbList = await _repository.GetAllAsync(x => x.FTPConnection, y => y.SQLConnection);
+            foreach (var dbRecord in dbList)
             {
-                website.Connections.AddIfNotNull(website.FTPConnection);
-                website.Connections.AddIfNotNull(website.SQLConnection);
+                dbRecord.Connections.AddIfNotNull(dbRecord.FTPConnection);
+                dbRecord.Connections.AddIfNotNull(dbRecord.SQLConnection);
+                Websites.Add(dbRecord);
             }
         }
 
@@ -48,6 +52,7 @@ namespace WebBackup.WPF.ViewModels
         protected override void OnActivated()
         {
             Messenger.Register<WebsitesViewModel, WebsiteRequestMessage>(this, (r, m) => r.Receive(m));
+            Messenger.Register<WebsiteChangedMessage>(this, (r,m) => Receive(m));
         }
 
         /// <summary>
@@ -55,7 +60,29 @@ namespace WebBackup.WPF.ViewModels
         /// </summary>
         public void Receive(WebsiteRequestMessage message)
         {
-            message.Reply(new WebsiteForm(selectedWebsite.Id, selectedWebsite.Name, selectedWebsite.Url));
+            if (selectedWebsite != null)
+            {
+                message.Reply(new WebsiteForm(selectedWebsite.Id, selectedWebsite.Name, selectedWebsite.Url));
+            }
+        }
+
+        /// <summary>
+        /// Updates View when dialog closed.
+        /// </summary>
+        /// <param name="message"></param>
+        private void Receive(WebsiteChangedMessage message)
+        {
+            var website = message.Value;
+            var existing = Websites.FirstOrDefault(x => x.Id == website.Id);
+            if (existing != null)
+            {
+                var index = Websites.IndexOf(existing);
+                Websites[index] = website;
+            }
+            else
+            {
+                Websites.Add(website);
+            }
         }
 
         [ICommand]
@@ -66,13 +93,12 @@ namespace WebBackup.WPF.ViewModels
                 selectedWebsite = new();
             }
             _windowService.ShowDialog<WebsiteFormWindow>();
-            // Messenger.Send(new WebsiteChangedMessage(selectedWebsite));
         }
     }
 
-    public class WebsiteChangedMessage : ValueChangedMessage<WebsiteForm>
+    public class WebsiteChangedMessage : ValueChangedMessage<Website>
     {
-        public WebsiteChangedMessage(WebsiteForm value) : base(value)
+        public WebsiteChangedMessage(Website value) : base(value)
         {
         }
     }
