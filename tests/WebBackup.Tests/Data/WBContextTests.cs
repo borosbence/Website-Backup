@@ -1,7 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using WebBackup.Infrastructure;
 using WebBackup.Infrastructure.Data;
 
 namespace WebBackup.Tests
