@@ -8,8 +8,7 @@
         mc:Ignorable="d"
         Title="New Website" Height="150" Width="400"
         WindowStartupLocation="CenterScreen"
-        d:DataContext="{d:DesignInstance Type=vm:WebsiteFormViewModel, IsDesignTimeCreatable=False}"
-        WindowStyle="ToolWindow">
+        d:DataContext="{d:DesignInstance Type=vm:WebsiteFormViewModel, IsDesignTimeCreatable=False}">
     <Window.Resources>
         <Style TargetType="TextBox">
             <Setter Property="TextWrapping" Value="Wrap" />
