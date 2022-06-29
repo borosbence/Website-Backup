@@ -31,10 +31,9 @@ namespace WebBackup.WPF.Views
 
         private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            var website = e.NewValue as Website;
-            var vm = this.DataContext as WebsitesViewModel;
-            if (website != null)
+            if (e.NewValue is Website website)
             {
+                var vm = this.DataContext as WebsitesViewModel;
                 vm.SelectedWebsite = website;
             }
         }

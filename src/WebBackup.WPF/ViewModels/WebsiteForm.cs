@@ -5,6 +5,13 @@ namespace WebBackup.WPF.ViewModels
 {
     public partial class WebsiteForm : ObservableValidator
     {
+        public WebsiteForm(int id, string name, string? url)
+        {
+            this.id = id;
+            this.name = name;
+            this.url = url;
+        }
+        
         private int id;
         public int Id
         {

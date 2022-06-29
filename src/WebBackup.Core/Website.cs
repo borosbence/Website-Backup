@@ -1,23 +1,17 @@
-﻿//using CommunityToolkit.Mvvm.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebBackup.Core
 {
     [Table("Websites")]
-    public partial class Website :/* ObservableValidator,*/ IEntity
+    public class Website : IEntity
     {
         [Key]
         public int Id { get; set; }
 
-        // TODO: Localize error messages
         [Required]
-        // [MinLength(1)]
-        //[ObservableProperty]
         public string Name { get; set; } = string.Empty;
 
-        // [Url]
-        //[ObservableProperty]
         public string? Url { get; set; }
 
         #region Navigation properties
@@ -25,8 +19,8 @@ namespace WebBackup.Core
 
         public SQLConnection? SQLConnection { get; set; }
 
-        //[NotMapped]
         // TODO: HashSet?
+        [NotMapped]
         public ICollection<Connection> Connections { get; set; } = new HashSet<Connection>();
         #endregion
     }

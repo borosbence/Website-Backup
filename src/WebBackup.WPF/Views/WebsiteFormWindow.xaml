@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:WebBackup.WPF.Views"
         xmlns:vm="clr-namespace:WebBackup.WPF.ViewModels"
         mc:Ignorable="d"
-        Title="New Website" Height="130" Width="400"
+        Title="New Website" Height="150" Width="400"
         WindowStartupLocation="CenterScreen"
         d:DataContext="{d:DesignInstance Type=vm:WebsiteFormViewModel, IsDesignTimeCreatable=False}"
         WindowStyle="ToolWindow">
@@ -32,10 +32,10 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Label Grid.Column="0" Grid.Row="0" Content="Name" />
-        <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding Website.Name}"
+        <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding WebsiteForm.Name}"
                  Validation.ErrorTemplate="{StaticResource validationTemplate}"/>
         <Label Grid.Column="0" Grid.Row="1" Content="URL" />
-        <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Website.Url}"
+        <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding WebsiteForm.Url}"
                  Validation.ErrorTemplate="{StaticResource validationTemplate}"/>
         <Grid Grid.Column="1" Grid.Row="2">
             <Grid.ColumnDefinitions>
@@ -43,7 +43,8 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" Content="Save" Command="{Binding SaveCommand}" CommandParameter="{Binding Website}" />
+            <Button Grid.Column="0" Content="Save" IsDefault="True"
+                    Command="{Binding SaveCommand}" CommandParameter="{Binding WebsiteForm}" />
             <Button Grid.Column="2" Content="Cancel" IsCancel="True" />
         </Grid>
     </Grid>

@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
-using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using WebBackup.Core;
 using WebBackup.Core.Repositories;
@@ -18,16 +17,12 @@ namespace WebBackup.WPF.ViewModels
             var messenger = Messenger.Send<WebsiteRequestMessage>();
             if (messenger.HasReceivedResponse)
             {
-                // websiteForm = messenger.Response;
+                websiteForm = messenger.Response;
             }
         }
 
-        private WebsiteForm websiteForm = new();
-        public WebsiteForm WebsiteForm
-        {
-            get { return websiteForm; }
-            set { websiteForm = value; }
-        }
+        [ObservableProperty]
+        private WebsiteForm? websiteForm;
 
         //private void Receive(WebsiteChangedMessage message)
         //{
@@ -42,18 +37,19 @@ namespace WebBackup.WPF.ViewModels
             {
                 return Task.CompletedTask;
             }
-            return Task.CompletedTask;
+            Website website = new Website { Name = websiteForm.Name, Url = websiteForm.Url };
 
-            //bool exists = _repository.ExistsAsync(website.Id).Result;
-            //if (exists)
-            //{
-            //    return _repository.UpdateAsync(website);
-
-            //}
-            //else
-            //{
-            //    return _repository.InsertAsync(website);
-            //}
+            bool exists = _repository.ExistsAsync(websiteForm.Id).Result;
+            if (exists)
+            {
+                website.Id = websiteForm.Id;
+                string[] excludeProperties = { "FTPConnection", "SQLConnection" };
+                return _repository.UpdateAsync(website, excludeProperties);
+            }
+            else
+            {
+                return _repository.InsertAsync(website);
+            }
             // TODO: notify main collection
         }
     }

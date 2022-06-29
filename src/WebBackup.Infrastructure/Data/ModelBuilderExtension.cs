@@ -8,7 +8,7 @@ namespace WebBackup.Infrastructure.Data
         public static void Seed(this ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Website>().HasData(
-                new Website { Id = 1, Name = "TestSite1" },
+                new Website { Id = 1, Name = "TestSite1", Url = "ABC" },
                 new Website { Id = 2, Name = "TestSite2" }
             );
 

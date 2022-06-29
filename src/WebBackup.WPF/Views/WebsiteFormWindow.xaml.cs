@@ -23,7 +23,7 @@ namespace WebBackup.WPF.Views
     {
         public WebsiteFormWindow()
         {
-            // DataContext = Ioc.Default.GetRequiredService<WebsiteFormViewModel>();
+            DataContext = Ioc.Default.GetRequiredService<WebsiteFormViewModel>();
             InitializeComponent();
         }
     }

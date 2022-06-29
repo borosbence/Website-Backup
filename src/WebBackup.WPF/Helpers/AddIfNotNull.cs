@@ -4,7 +4,7 @@ namespace WebBackup.WPF
 {
     public static class Helpers
     {
-        public static void AddIfNotNull<T>(this ICollection<T> list, T item)
+        public static void AddIfNotNull<T>(this ICollection<T> list, T? item)
         {
             if (item != null)
             {

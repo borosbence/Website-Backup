@@ -1,6 +1,4 @@
-﻿//using CommunityToolkit.Mvvm.ComponentModel;
-//using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebBackup.Core
@@ -9,22 +7,17 @@ namespace WebBackup.Core
     /// Base class for Connections.
     /// </summary>
     [NotMapped]
-    //[Index(nameof(WebsiteId), IsUnique = true)]
-    public abstract partial class Connection : /*ObservableValidator,*/ IEntity
+    public abstract class Connection : IEntity
     {
         [Key]
         public int Id { get; set; }
 
         [Required]
-        //[ObservableProperty]
         public string HostName { get; set; } = string.Empty;
 
         [Required]
-        //[ObservableProperty]
         public string Username { get; set; } = string.Empty;
 
-        [Required]
-        //[ObservableProperty]
         public string Password { get; set; } = string.Empty;
 
         [Required]

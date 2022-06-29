@@ -18,7 +18,7 @@
     <ProjectReference Include="..\WebBackup.Infrastructure\WebBackup.Infrastructure.csproj" />
   </ItemGroup>
 
-    <ItemGroup>
+  <ItemGroup>
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -26,13 +26,6 @@
 
   <ItemGroup>
     <Resource Include="Resources\Fonts\Segoe Fluent Icons.ttf" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Page Update="Resources\Languages\Strings.hu-HU.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
   </ItemGroup>
 
 </Project>

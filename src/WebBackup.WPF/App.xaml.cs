@@ -49,7 +49,7 @@ namespace WebBackup.WPF
             services.AddSingleton<IWindowService, WindowService>();
             // Transienvt - ViewModels
             services.AddTransient<WebsitesViewModel>();
-            //services.AddTransient<WebsiteFormViewModel>();
+            services.AddTransient<WebsiteFormViewModel>();
 
             return services.BuildServiceProvider();
         }

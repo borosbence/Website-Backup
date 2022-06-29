@@ -49,9 +49,13 @@ namespace WebBackup.WPF.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(TEntity entity)
+        public async Task UpdateAsync(TEntity entity, params string[] excludeProperties)
         {
             _context.Set<TEntity>().Update(entity);
+            foreach (var property in excludeProperties)
+            {
+                _context.Entry(entity).Property(property).IsModified = false;
+            }
             await _context.SaveChangesAsync();
         }
         public async Task DeleteAsync(TEntity entity)

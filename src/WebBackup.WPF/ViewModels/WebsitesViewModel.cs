@@ -55,7 +55,7 @@ namespace WebBackup.WPF.ViewModels
         /// </summary>
         public void Receive(WebsiteRequestMessage message)
         {
-            message.Reply(selectedWebsite);
+            message.Reply(new WebsiteForm(selectedWebsite.Id, selectedWebsite.Name, selectedWebsite.Url));
         }
 
         [ICommand]
@@ -70,14 +70,14 @@ namespace WebBackup.WPF.ViewModels
         }
     }
 
-    public class WebsiteChangedMessage : ValueChangedMessage<Website>
+    public class WebsiteChangedMessage : ValueChangedMessage<WebsiteForm>
     {
-        public WebsiteChangedMessage(Website value) : base(value)
+        public WebsiteChangedMessage(WebsiteForm value) : base(value)
         {
         }
     }
 
-    public sealed class WebsiteRequestMessage : RequestMessage<Website>
+    public class WebsiteRequestMessage : RequestMessage<WebsiteForm>
     {
 
     }
