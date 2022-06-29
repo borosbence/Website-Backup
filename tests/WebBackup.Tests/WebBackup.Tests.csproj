@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WebBackup.WPF\WebBackup.WPF.csproj" />
+    <ProjectReference Include="..\..\src\WebBackup.WPF\WebBackup.WPF.csproj" />
   </ItemGroup>
 
 </Project>
