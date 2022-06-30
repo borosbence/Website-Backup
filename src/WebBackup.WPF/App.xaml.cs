@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.DependencyInjection;
+﻿using AutoMapper;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -51,9 +52,11 @@ namespace WebBackup.WPF
             services.AddScoped<IGenericRepository<Website>, GenericRepository<Website, WBContext>>();
             // Singleton - Services
             services.AddSingleton<IWindowService, WindowService>();
+            services.AddAutoMapper(typeof(WBProfile));
             // Transient - ViewModels
             services.AddTransient<WebsitesViewModel>();
-            services.AddTransient<WebsiteFormViewModel>();
+            // services.AddTransient<WebsiteFormViewModel>();
+
 
             return services.BuildServiceProvider();
         }

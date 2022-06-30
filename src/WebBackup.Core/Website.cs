@@ -20,8 +20,8 @@ namespace WebBackup.Core
         public SQLConnection? SQLConnection { get; set; }
 
         // TODO: HashSet?
-        [NotMapped]
-        public ICollection<Connection> Connections { get; set; } = new HashSet<Connection>();
+        // [NotMapped]
+        // public ICollection<Connection> Connections { get; set; } = new HashSet<Connection>();
         #endregion
     }
 }

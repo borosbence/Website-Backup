@@ -9,7 +9,6 @@ namespace WebBackup.WPF.Repositories
         where TEntity : class, IEntity
         where TContext : DbContext
     {
-
         protected TContext _context;
 
         public GenericRepository(TContext context)
@@ -31,9 +30,10 @@ namespace WebBackup.WPF.Repositories
             }
             return await query.ToListAsync();
         }
+
         public async Task<bool> ExistsAsync(int id)
         {
-            return await _context.Set<TEntity>().AsNoTracking().AnyAsync(x => x.Id == id);
+            return await _context.Set<TEntity>().AnyAsync(x => x.Id == id);
         }
 
         public async Task<TEntity?> GetByIdAsync(int id)
@@ -49,13 +49,25 @@ namespace WebBackup.WPF.Repositories
 
         public async Task UpdateAsync(TEntity entity, params string[] excludeProperties)
         {
-            _context.Set<TEntity>().Update(entity);
+            try
+            {
+                // TODO: WHY error???
+                _context.Entry<TEntity>(entity).State = EntityState.Modified;
+                // _context.Set<TEntity>().Update(entity);
+
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
             foreach (var property in excludeProperties)
             {
                 _context.Entry(entity).Property(property).IsModified = false;
             }
             await _context.SaveChangesAsync();
         }
+
         public async Task DeleteAsync(TEntity entity)
         {
             _context.Set<TEntity>().Remove(entity);

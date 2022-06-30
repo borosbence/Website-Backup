@@ -5,7 +5,9 @@ namespace WebBackup.WPF.Services
     public interface IWindowService
     {
         void ShowDialog<T>(object? viewModel = null) where T : Window, new();
+        void Close(object window);
         bool ConfirmDelete(string title, string caption);
+        
     }
 
     public class WindowService : IWindowService
@@ -18,6 +20,14 @@ namespace WebBackup.WPF.Services
                 window.DataContext = viewModel;
             }
             window.ShowDialog();
+        }
+
+        public void Close(object window)
+        {
+            if (window is Window closeWindow)
+            {
+                closeWindow.Close();
+            }
         }
 
         public bool ConfirmDelete(string title, string caption)
