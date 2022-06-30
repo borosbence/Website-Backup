@@ -25,16 +25,4 @@ namespace WebBackup.WPF.ViewModels
 
         public ICollection<Connection> Connections { get; set; } = new HashSet<Connection>();
     }
-
-    public class FTPConnectionVM : Connection
-    {
-        public bool IsSSLEnabled { get; set; }
-
-        public bool IsPassive { get; set; }
-    }
-
-    public class SQLConnectionVM : Connection
-    {
-        public string DatabaseName { get; set; } = string.Empty;
-    }
 }

@@ -49,18 +49,14 @@ namespace WebBackup.WPF.Repositories
 
         public async Task UpdateAsync(TEntity entity, params string[] excludeProperties)
         {
-            try
+            TEntity? dbEntity = await GetByIdAsync(entity.Id); ;
+            if (dbEntity != null)
             {
-                // TODO: WHY error???
-                _context.Entry<TEntity>(entity).State = EntityState.Modified;
-                // _context.Set<TEntity>().Update(entity);
-
+                _context.Entry(dbEntity).CurrentValues.SetValues(entity);
             }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
+            // TODO: WHY error???
+            // _context.Entry<TEntity>(entity).State = EntityState.Modified;
+            // _context.Set<TEntity>().Update(entity);
             foreach (var property in excludeProperties)
             {
                 _context.Entry(entity).Property(property).IsModified = false;
@@ -70,8 +66,13 @@ namespace WebBackup.WPF.Repositories
 
         public async Task DeleteAsync(TEntity entity)
         {
-            _context.Set<TEntity>().Remove(entity);
-            await _context.SaveChangesAsync();
+            // TODO: keep tracking?
+            TEntity? dbEntity = await GetByIdAsync(entity.Id);
+            if (dbEntity != null)
+            {
+                _context.Set<TEntity>().Remove(dbEntity);
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }

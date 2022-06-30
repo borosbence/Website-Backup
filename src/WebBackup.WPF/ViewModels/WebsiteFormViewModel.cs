@@ -26,6 +26,7 @@ namespace WebBackup.WPF.ViewModels
         [ObservableProperty]
         private WebsiteVM websiteForm;
 
+
         // TODO: disabled Save button on error
         [ICommand]
         private async Task SaveAsync(object window)
@@ -47,6 +48,8 @@ namespace WebBackup.WPF.ViewModels
             {
                 await _repository.InsertAsync(website);
             }
+            // Notify collection
+            Messenger.Send(new WebsiteChangedMessage(websiteForm));
             _windowService.Close(window);
         }
     }

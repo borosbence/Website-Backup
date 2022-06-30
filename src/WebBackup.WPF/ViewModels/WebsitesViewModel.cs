@@ -63,6 +63,7 @@ namespace WebBackup.WPF.ViewModels
         private async Task LoadData()
         {
             Websites.Clear();
+            // var dbList = await _repository.GetAllAsync(x => x.FTPConnection, y => y.SQLConnection);
             var dbList = await _repository.GetAllAsync(x => x.FTPConnection, y => y.SQLConnection);
             foreach (var dbRecord in dbList)
             {
