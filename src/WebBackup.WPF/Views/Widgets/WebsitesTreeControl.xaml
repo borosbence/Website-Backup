@@ -34,6 +34,9 @@
                     </MenuItem>
                 </ContextMenu>
             </TreeView.ContextMenu>
+            <TreeView.InputBindings>
+                <KeyBinding Key="Delete" Command="{Binding DeleteCommand}" CommandParameter="{Binding SelectedWebsite}" />
+            </TreeView.InputBindings>
 
             <TreeView.Resources>
                 <HierarchicalDataTemplate DataType="{x:Type model:WebsiteVM}" ItemsSource="{Binding Connections}">

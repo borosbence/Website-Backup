@@ -13,7 +13,7 @@ using WebBackup.WPF.Views;
 
 namespace WebBackup.WPF.ViewModels
 {
-    public partial class WebsitesViewModel : ObservableRecipient
+    public partial class WebsitesViewModel : ObservableRecipient, IRecipient<WebsiteRequestMessage>
     {
         private readonly IGenericRepository<Website> _repository;
         private readonly IMapper _mapper;
@@ -40,8 +40,9 @@ namespace WebBackup.WPF.ViewModels
             {
                 selectedWebsite = new();
             }
-            var wfVM = new WebsiteFormViewModel(selectedWebsite, _repository, _mapper, _windowService);
-            _windowService.ShowDialog<WebsiteFormWindow>(wfVM);
+            //var wfVM = new WebsiteFormViewModel(selectedWebsite, _repository, _mapper, _windowService);
+            //_windowService.ShowDialog<WebsiteFormWindow>(wfVM);
+            _windowService.ShowDialog<WebsiteFormWindow>();
         }
 
         [ICommand]
@@ -63,7 +64,6 @@ namespace WebBackup.WPF.ViewModels
         private async Task LoadData()
         {
             Websites.Clear();
-            // var dbList = await _repository.GetAllAsync(x => x.FTPConnection, y => y.SQLConnection);
             var dbList = await _repository.GetAllAsync(x => x.FTPConnection, y => y.SQLConnection);
             foreach (var dbRecord in dbList)
             {
@@ -77,13 +77,13 @@ namespace WebBackup.WPF.ViewModels
         protected override void OnActivated()
         {
             Messenger.Register<WebsiteChangedMessage>(this, (r, m) => Receive(m));
+            Messenger.Register<WebsiteRequestMessage>(this, (r, m) => Receive(m));
         }
 
         private void Receive(WebsiteChangedMessage message)
         {
             var websiteVM = message.Value;
-            var website = _mapper.Map<Website>(websiteVM);
-            var existing = Websites.FirstOrDefault(x => x.Id == website.Id);
+            var existing = Websites.FirstOrDefault(x => x.Id == websiteVM.Id);
             // Replace, update existing element
             if (existing != null)
             {
@@ -96,6 +96,12 @@ namespace WebBackup.WPF.ViewModels
                 Websites.Add(websiteVM);
             }
         }
+
+        public void Receive(WebsiteRequestMessage message)
+        {
+            message.Reply(selectedWebsite);
+        }
+
     }
 
     public class WebsiteChangedMessage : ValueChangedMessage<WebsiteVM>
@@ -103,5 +109,9 @@ namespace WebBackup.WPF.ViewModels
         public WebsiteChangedMessage(WebsiteVM value) : base(value)
         {
         }
+    }
+    public class WebsiteRequestMessage : RequestMessage<WebsiteVM?>
+    {
+
     }
 }

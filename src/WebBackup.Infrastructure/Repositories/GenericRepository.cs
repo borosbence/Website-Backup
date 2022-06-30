@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 using WebBackup.Core;
 using WebBackup.Core.Repositories;
 
-namespace WebBackup.WPF.Repositories
+namespace WebBackup.Infrastructure.Repositories
 {
     public class GenericRepository<TEntity, TContext> : IGenericRepository<TEntity>
         where TEntity : class, IEntity
@@ -26,7 +26,7 @@ namespace WebBackup.WPF.Repositories
             IQueryable<TEntity> query = _context.Set<TEntity>();
             foreach (var include in includes)
             {
-                query = query.Include(include);
+                query = query.Include(include).AsNoTracking();
             }
             return await query.ToListAsync();
         }
@@ -49,24 +49,25 @@ namespace WebBackup.WPF.Repositories
 
         public async Task UpdateAsync(TEntity entity, params string[] excludeProperties)
         {
-            TEntity? dbEntity = await GetByIdAsync(entity.Id); ;
-            if (dbEntity != null)
-            {
-                _context.Entry(dbEntity).CurrentValues.SetValues(entity);
-            }
-            // TODO: WHY error???
-            // _context.Entry<TEntity>(entity).State = EntityState.Modified;
-            // _context.Set<TEntity>().Update(entity);
+            // Keep tracking the changes :-(
+            _context.Set<TEntity>().Update(entity);
+            //TEntity? dbEntity = await GetByIdAsync(entity.Id); ;
+            //if (dbEntity != null)
+            //{
+            //    _context.Entry(dbEntity).CurrentValues.SetValues(entity);
+            //}
             foreach (var property in excludeProperties)
             {
                 _context.Entry(entity).Property(property).IsModified = false;
             }
             await _context.SaveChangesAsync();
+            _context.Entry(entity).State = EntityState.Detached;
         }
 
         public async Task DeleteAsync(TEntity entity)
         {
-            // TODO: keep tracking?
+            //_context.Set<TEntity>().Remove(entity);
+            //await _context.SaveChangesAsync();
             TEntity? dbEntity = await GetByIdAsync(entity.Id);
             if (dbEntity != null)
             {

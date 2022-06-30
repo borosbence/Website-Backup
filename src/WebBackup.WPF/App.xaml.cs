@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using CommunityToolkit.Mvvm.DependencyInjection;
+﻿using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,7 +8,7 @@ using System.Windows;
 using WebBackup.Core;
 using WebBackup.Core.Repositories;
 using WebBackup.Infrastructure.Data;
-using WebBackup.WPF.Repositories;
+using WebBackup.Infrastructure.Repositories;
 using WebBackup.WPF.Services;
 using WebBackup.WPF.ViewModels;
 
@@ -44,10 +43,7 @@ namespace WebBackup.WPF
             string connectionString = Config.GetConnectionString("WebBackupDB");
             // DbContext
             services.AddDbContext<WBContext>(options =>
-            {
-                options.UseSqlite(connectionString, x => x.MigrationsAssembly("WebBackup.Infrastructure"));
-                // options.EnableSensitiveDataLogging();
-            });
+                options.UseSqlite(connectionString, x => x.MigrationsAssembly("WebBackupDB.Infrastructure")));
             // Scoped - Repositories
             services.AddScoped<IGenericRepository<Website>, GenericRepository<Website, WBContext>>();
             // Singleton - Services
@@ -55,7 +51,7 @@ namespace WebBackup.WPF
             services.AddAutoMapper(typeof(WBProfile));
             // Transient - ViewModels
             services.AddTransient<WebsitesViewModel>();
-            // services.AddTransient<WebsiteFormViewModel>();
+            services.AddTransient<WebsiteFormViewModel>();
 
 
             return services.BuildServiceProvider();

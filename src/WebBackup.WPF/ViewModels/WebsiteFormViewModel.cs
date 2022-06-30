@@ -14,10 +14,9 @@ namespace WebBackup.WPF.ViewModels
         private readonly IGenericRepository<Website> _repository;
         private readonly IMapper _mapper;
         private readonly IWindowService _windowService;
-        public WebsiteFormViewModel(WebsiteVM? websiteVM,
-            IGenericRepository<Website> repository, IMapper mapper, IWindowService windowService)
+        public WebsiteFormViewModel(IGenericRepository<Website> repository, IMapper mapper, IWindowService windowService)
         {
-            websiteForm = websiteVM ?? new();
+            websiteForm = Messenger.Send<WebsiteRequestMessage>().Response ?? new();
             _repository = repository;
             _mapper = mapper;
             _windowService = windowService;
@@ -25,7 +24,6 @@ namespace WebBackup.WPF.ViewModels
 
         [ObservableProperty]
         private WebsiteVM websiteForm;
-
 
         // TODO: disabled Save button on error
         [ICommand]
@@ -41,7 +39,6 @@ namespace WebBackup.WPF.ViewModels
             bool exists = await _repository.ExistsAsync(websiteForm.Id);
             if (exists)
             {
-                // TODO: keep tracking the entitiy
                 await _repository.UpdateAsync(website);
             }
             else

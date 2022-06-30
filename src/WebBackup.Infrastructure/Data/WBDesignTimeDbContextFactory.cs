@@ -7,7 +7,7 @@ namespace WebBackup.Infrastructure.Data
     {
         public WBContext CreateDbContext(string[] args)
         {
-            const string CONNECTION_STRING = @"Data Source=webbackup.db";
+            const string CONNECTION_STRING = "Data Source=webbackup.db";
             var options = new DbContextOptionsBuilder<WBContext>().UseSqlite(CONNECTION_STRING).Options;
             return new WBContext(options);
         }
