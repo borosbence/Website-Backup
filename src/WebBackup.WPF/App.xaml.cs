@@ -19,7 +19,7 @@ namespace WebBackup.WPF
     /// </summary>
     public partial class App : Application
     {
-        public static IConfiguration? Config { get; private set; }
+        public static IConfiguration Config { get; private set; }
 
         public App()
         {
@@ -71,7 +71,6 @@ namespace WebBackup.WPF
         #endregion
 
         #region XAML skins
-        
         private string _activeSkin = string.Empty;
         /// <summary>
         /// Application Active skin name from ResourceDictionary 'SkinName'
@@ -89,7 +88,6 @@ namespace WebBackup.WPF
                 SkinResourceDictionary.ChangeSkin(_activeSkin);
             }
         }
-
         #endregion
 
         protected override void OnStartup(StartupEventArgs e)
@@ -98,10 +96,6 @@ namespace WebBackup.WPF
 
             // Check if program is running
             CheckMutex();
-
-            // Create database file if not exist
-            var context = Ioc.Default.GetRequiredService<WBContext>();
-            context.Database.EnsureCreatedAsync();
 
             // Set default skin
             var skinConfig = Config.GetSection("Skin");

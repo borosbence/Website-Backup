@@ -15,18 +15,14 @@ namespace WebBackup.Tests
 
         public WebsiteRepositoryTests()
         {
-            var config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
-            string connectionString = config.GetConnectionString("WebBackupDB");
-
-            var options = new DbContextOptionsBuilder<WBContext>().UseSqlite(connectionString).Options;
-            var context = new WBContext(options);
-            _repository = new GenericRepository<Website, WBContext>(context);
+            IDbContextFactory<WBContext> contextFactory = new WBDbContextFactory();
+            _repository = new GenericRepository<Website, WBContext>(contextFactory);
         }
 
         [TestMethod()]
         public void GetAllCountTest()
         {
-            var list = _repository.GetAllAsync().Result;
+            List<Website> list = _repository.GetAllAsync().Result;
             int result = list.Count;
 
             Assert.AreEqual(2, result);

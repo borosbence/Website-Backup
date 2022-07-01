@@ -7,7 +7,10 @@ namespace WebBackup.Infrastructure.Data
     {
         public WBContext(DbContextOptions<WBContext> options) : base(options)
         {
+            // Create database file if not exist
+            Database.EnsureCreated();
         }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
