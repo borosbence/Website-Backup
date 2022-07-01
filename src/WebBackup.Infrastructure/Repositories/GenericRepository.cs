@@ -9,21 +9,24 @@ namespace WebBackup.Infrastructure.Repositories
         where TEntity : class, IEntity
         where TContext : DbContext
     {
-        protected TContext _context;
+        // https://docs.microsoft.com/en-us/ef/core/dbcontext-configuration/ <3
+        protected IDbContextFactory<TContext> _contextFactory;
 
-        public GenericRepository(TContext context)
+        public GenericRepository(IDbContextFactory<TContext> contextFactory)
         {
-            _context = context;
+            _contextFactory = contextFactory;
         }
 
         public async Task<List<TEntity>> GetAllAsync()
         {
-            return await _context.Set<TEntity>().ToListAsync();
+            using TContext context = await _contextFactory.CreateDbContextAsync();
+            return await context.Set<TEntity>().ToListAsync();
         }
 
         public async Task<List<TEntity>> GetAllAsync(params Expression<Func<TEntity, object>>[] includes)
         {
-            IQueryable<TEntity> query = _context.Set<TEntity>();
+            using TContext context = await _contextFactory.CreateDbContextAsync();
+            IQueryable<TEntity> query = context.Set<TEntity>();
             foreach (var include in includes)
             {
                 query = query.Include(include).AsNoTracking();
@@ -33,47 +36,39 @@ namespace WebBackup.Infrastructure.Repositories
 
         public async Task<bool> ExistsAsync(int id)
         {
-            return await _context.Set<TEntity>().AnyAsync(x => x.Id == id);
+            using TContext context = await _contextFactory.CreateDbContextAsync();
+            return await context.Set<TEntity>().AnyAsync(x => x.Id == id);
         }
 
         public async Task<TEntity?> GetByIdAsync(int id)
         {
-            return await _context.Set<TEntity>().FindAsync(id);
+            using TContext context = await _contextFactory.CreateDbContextAsync();
+            return await context.Set<TEntity>().FindAsync(id);
         }
 
         public async Task InsertAsync(TEntity entity)
         {
-            _context.Set<TEntity>().Add(entity);
-            await _context.SaveChangesAsync();
+            using TContext context = await _contextFactory.CreateDbContextAsync();
+            context.Set<TEntity>().Add(entity);
+            await context.SaveChangesAsync();
         }
 
         public async Task UpdateAsync(TEntity entity, params string[] excludeProperties)
         {
-            // Keep tracking the changes :-(
-            _context.Set<TEntity>().Update(entity);
-            //TEntity? dbEntity = await GetByIdAsync(entity.Id); ;
-            //if (dbEntity != null)
-            //{
-            //    _context.Entry(dbEntity).CurrentValues.SetValues(entity);
-            //}
+            using TContext context = await _contextFactory.CreateDbContextAsync();
+            context.Set<TEntity>().Update(entity);
             foreach (var property in excludeProperties)
             {
-                _context.Entry(entity).Property(property).IsModified = false;
+                context.Entry(entity).Property(property).IsModified = false;
             }
-            await _context.SaveChangesAsync();
-            _context.Entry(entity).State = EntityState.Detached;
+            await context.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(TEntity entity)
         {
-            //_context.Set<TEntity>().Remove(entity);
-            //await _context.SaveChangesAsync();
-            TEntity? dbEntity = await GetByIdAsync(entity.Id);
-            if (dbEntity != null)
-            {
-                _context.Set<TEntity>().Remove(dbEntity);
-                await _context.SaveChangesAsync();
-            }
+            using TContext context = await _contextFactory.CreateDbContextAsync();
+            context.Set<TEntity>().Remove(entity);
+            await context.SaveChangesAsync();
         }
     }
 }

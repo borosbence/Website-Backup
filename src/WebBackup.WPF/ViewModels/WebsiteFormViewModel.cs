@@ -44,6 +44,7 @@ namespace WebBackup.WPF.ViewModels
             else
             {
                 await _repository.InsertAsync(website);
+                websiteForm.Id = website.Id;
             }
             // Notify collection
             Messenger.Send(new WebsiteChangedMessage(websiteForm));

@@ -42,7 +42,7 @@ namespace WebBackup.WPF
 
             string connectionString = Config.GetConnectionString("WebBackupDB");
             // DbContext
-            services.AddDbContext<WBContext>(options =>
+            services.AddDbContextFactory<WBContext>(options =>
                 options.UseSqlite(connectionString, x => x.MigrationsAssembly("WebBackupDB.Infrastructure")));
             // Scoped - Repositories
             services.AddScoped<IGenericRepository<Website>, GenericRepository<Website, WBContext>>();
