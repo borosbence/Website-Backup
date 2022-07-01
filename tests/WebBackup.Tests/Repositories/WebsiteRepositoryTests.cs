@@ -1,10 +1,10 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using WebBackup.WPF.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using WebBackup.Core.Repositories;
 using WebBackup.Core;
 using WebBackup.Infrastructure.Data;
+using WebBackup.Infrastructure.Repositories;
 
 namespace WebBackup.Tests
 {

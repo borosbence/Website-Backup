@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Configuration;
 using WebBackup.Core;
 
 namespace WebBackup.Infrastructure.Data
@@ -8,6 +7,14 @@ namespace WebBackup.Infrastructure.Data
     {
         public WBContext(DbContextOptions<WBContext> options) : base(options)
         {
+        }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                const string CONNECTION_STRING = "Data Source=webbackup.db";
+                optionsBuilder.UseSqlite(CONNECTION_STRING);
+            }
         }
 
         public DbSet<Website> Websites => Set<Website>();
