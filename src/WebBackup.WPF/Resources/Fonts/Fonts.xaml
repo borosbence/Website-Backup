@@ -1,4 +1,4 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <FontFamily x:Key="Segoe Fluent Icons">pack://application:,,,/WebBackup.WPF;component/Resources/Fonts/#Segoe Fluent Icons</FontFamily>
+    <FontFamily x:Key="Icons">pack://application:,,,/WebBackup.WPF;component/Resources/Fonts/#Segoe Fluent Icons</FontFamily>
 </ResourceDictionary>

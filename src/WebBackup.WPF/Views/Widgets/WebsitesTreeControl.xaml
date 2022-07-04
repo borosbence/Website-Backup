@@ -29,7 +29,7 @@
                     <MenuItem Header="{DynamicResource NewWebsite}"
                               Command="{Binding ShowWebsiteCommand}" CommandParameter="new">
                         <MenuItem.Icon>
-                            <TextBlock Text="&#xe710;" FontFamily="{StaticResource Segoe Fluent Icons}"/>
+                            <TextBlock Text="{StaticResource IconAdd}" FontFamily="{StaticResource Icons}"/>
                         </MenuItem.Icon>
                     </MenuItem>
                 </ContextMenu>
@@ -48,29 +48,29 @@
                                 <MenuItem Header="{DynamicResource EditWebsite}" 
                                           Command="{Binding DataContext.ShowWebsiteCommand, Source={x:Reference WebsitesUC}}">
                                     <MenuItem.Icon>
-                                        <TextBlock Text="&#xe70f;" FontFamily="{StaticResource Segoe Fluent Icons}"/>
+                                        <TextBlock Text="{StaticResource IconEdit}" FontFamily="{StaticResource Icons}"/>
                                     </MenuItem.Icon>
                                 </MenuItem>
                                 <MenuItem Header="{DynamicResource DeleteWebsite}"
                                           Command="{Binding DataContext.DeleteCommand, Source={x:Reference WebsitesUC}}"
                                           CommandParameter="{Binding DataContext.SelectedWebsite, Source={x:Reference WebsitesUC}}">
                                     <MenuItem.Icon>
-                                        <TextBlock Text="&#xe74d;" FontFamily="{StaticResource Segoe Fluent Icons}"/>
+                                        <TextBlock Text="{StaticResource IconDelete}" FontFamily="{StaticResource Icons}"/>
                                     </MenuItem.Icon>
                                 </MenuItem>
                                 <Separator />
                                 <MenuItem Header="{DynamicResource Add}">
                                     <MenuItem.Icon>
-                                        <TextBlock Text="&#xe710;" FontFamily="{StaticResource Segoe Fluent Icons}"/>
+                                        <TextBlock Text="{StaticResource IconAdd}" FontFamily="{StaticResource Icons}"/>
                                     </MenuItem.Icon>
                                     <MenuItem Header="{DynamicResource NewFTP}">
                                         <MenuItem.Icon>
-                                            <TextBlock Text="&#xe710;" FontFamily="{StaticResource Segoe Fluent Icons}"/>
+                                            <TextBlock Text="{StaticResource IconAdd}" FontFamily="{StaticResource Icons}"/>
                                         </MenuItem.Icon>
                                     </MenuItem>
                                     <MenuItem Header="{DynamicResource NewSQL}">
                                         <MenuItem.Icon>
-                                            <TextBlock Text="&#xe710;" FontFamily="{StaticResource Segoe Fluent Icons}"/>
+                                            <TextBlock Text="{StaticResource IconAdd}" FontFamily="{StaticResource Icons}"/>
                                         </MenuItem.Icon>
                                     </MenuItem>
                                 </MenuItem>
@@ -85,17 +85,17 @@
                             <ContextMenu>
                                 <MenuItem Header="{DynamicResource TestConnection}">
                                     <MenuItem.Icon>
-                                        <TextBlock Text="&#xe9d9;" FontFamily="{StaticResource Segoe Fluent Icons}"/>
+                                        <TextBlock Text="{StaticResource IconDiagnostic}" FontFamily="{StaticResource Icons}"/>
                                     </MenuItem.Icon>
                                 </MenuItem>
                                 <MenuItem Header="{DynamicResource EditFTP}">
                                     <MenuItem.Icon>
-                                        <TextBlock Text="&#xe70f;" FontFamily="{StaticResource Segoe Fluent Icons}"/>
+                                        <TextBlock Text="{StaticResource IconEdit}" FontFamily="{StaticResource Icons}"/>
                                     </MenuItem.Icon>
                                 </MenuItem>
                                 <MenuItem Header="{DynamicResource DeleteFTP}">
                                     <MenuItem.Icon>
-                                        <TextBlock Text="&#xe74d;" FontFamily="{StaticResource Segoe Fluent Icons}"/>
+                                        <TextBlock Text="{StaticResource IconDelete}" FontFamily="{StaticResource Icons}"/>
                                     </MenuItem.Icon>
                                 </MenuItem>
                             </ContextMenu>
@@ -109,17 +109,17 @@
                             <ContextMenu>
                                 <MenuItem Header="{DynamicResource TestConnection}">
                                     <MenuItem.Icon>
-                                        <TextBlock Text="&#xe9d9;" FontFamily="{StaticResource Segoe Fluent Icons}"/>
+                                        <TextBlock Text="{StaticResource IconDiagnostic}" FontFamily="{StaticResource Icons}"/>
                                     </MenuItem.Icon>
                                 </MenuItem>
                                 <MenuItem Header="{DynamicResource EditSQL}">
                                     <MenuItem.Icon>
-                                        <TextBlock Text="&#xe70f;" FontFamily="{StaticResource Segoe Fluent Icons}"/>
+                                        <TextBlock Text="{StaticResource IconEdit}" FontFamily="{StaticResource Icons}"/>
                                     </MenuItem.Icon>
                                 </MenuItem>
                                 <MenuItem Header="{DynamicResource DeleteSQL}">
                                     <MenuItem.Icon>
-                                        <TextBlock Text="&#xe74d;" FontFamily="{StaticResource Segoe Fluent Icons}"/>
+                                        <TextBlock Text="{StaticResource IconDelete}" FontFamily="{StaticResource Icons}"/>
                                     </MenuItem.Icon>
                                 </MenuItem>
                             </ContextMenu>
