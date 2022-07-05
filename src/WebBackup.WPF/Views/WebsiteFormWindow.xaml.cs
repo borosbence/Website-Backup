@@ -25,6 +25,7 @@ namespace WebBackup.WPF.Views
         {
             DataContext = Ioc.Default.GetRequiredService<WebsiteFormViewModel>();
             InitializeComponent();
+            txtName.Focus();
         }
     }
 }

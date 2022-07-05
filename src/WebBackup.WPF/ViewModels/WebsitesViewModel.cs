@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
@@ -16,44 +15,43 @@ namespace WebBackup.WPF.ViewModels
     public partial class WebsitesViewModel : ObservableRecipient, IRecipient<WebsiteRequestMessage>
     {
         private readonly IGenericRepository<Website> _repository;
-        private readonly IMapper _mapper;
         private readonly IWindowService _windowService;
 
-        public WebsitesViewModel(IGenericRepository<Website> repository, IMapper mapper, IWindowService windowService)
+        public WebsitesViewModel(IGenericRepository<Website> repository, IWindowService windowService)
         {
             _repository = repository;
-            _mapper = mapper;
             _windowService = windowService;
             Task.Run(async () => await LoadData()).Wait();
             OnActivated();
         }
 
-        public ObservableCollection<WebsiteVM> Websites { get; set; } = new ObservableCollection<WebsiteVM>();
+        public ObservableCollection<Website> Websites { get; set; } = new ObservableCollection<Website>();
 
+        //[ObservableProperty]
+        //private WebsiteVM? selectedWebsite;
         [ObservableProperty]
-        private WebsiteVM? selectedWebsite;
+        private Website? selectedWebsite;
 
         [ICommand]
         private void ShowWebsite(string param)
         {
             if (!string.IsNullOrEmpty(param))
             {
-                selectedWebsite = new();
+                selectedWebsite = null;
             }
-            //var wfVM = new WebsiteFormViewModel(selectedWebsite, _repository, _mapper, _windowService);
+            //var wfVM = new WebsiteFormViewModel(selectedWebsite, _repository, _windowService);
             //_windowService.ShowDialog<WebsiteFormWindow>(wfVM);
             _windowService.ShowDialog<WebsiteFormWindow>();
         }
 
         [ICommand]
-        private async Task DeleteAsync(WebsiteVM selectedWebsite)
+        private async Task DeleteAsync(Website selectedWebsite)
         {
             // TODO: localize
             bool confirmed = _windowService.ConfirmDelete("Delete Website", "Confirm Delete?");
             if (confirmed)
             {
-                var website = _mapper.Map<Website>(selectedWebsite);
-                await _repository.DeleteAsync(website);
+                await _repository.DeleteAsync(selectedWebsite);
                 Websites.Remove(selectedWebsite);
             }
         }
@@ -65,13 +63,12 @@ namespace WebBackup.WPF.ViewModels
         {
             Websites.Clear();
             var dbList = await _repository.GetAllAsync(x => x.FTPConnection, y => y.SQLConnection);
-            foreach (var dbRecord in dbList)
-            {
-                var website = _mapper.Map<WebsiteVM>(dbRecord);
+            // Build connections to websites
+            dbList.ForEach(website => {
                 website.Connections.AddIfNotNull(website.FTPConnection);
                 website.Connections.AddIfNotNull(website.SQLConnection);
                 Websites.Add(website);
-            }
+            });
         }
 
         protected override void OnActivated()
@@ -104,13 +101,13 @@ namespace WebBackup.WPF.ViewModels
 
     }
 
-    public class WebsiteChangedMessage : ValueChangedMessage<WebsiteVM>
+    public class WebsiteChangedMessage : ValueChangedMessage<Website>
     {
-        public WebsiteChangedMessage(WebsiteVM value) : base(value)
+        public WebsiteChangedMessage(Website value) : base(value)
         {
         }
     }
-    public class WebsiteRequestMessage : RequestMessage<WebsiteVM?>
+    public class WebsiteRequestMessage : RequestMessage<Website?>
     {
 
     }

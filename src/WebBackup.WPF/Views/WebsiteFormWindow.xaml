@@ -6,9 +6,9 @@
         xmlns:local="clr-namespace:WebBackup.WPF.Views"
         xmlns:vm="clr-namespace:WebBackup.WPF.ViewModels"
         mc:Ignorable="d"
-        Title="New Website" Height="150" Width="400"
-        WindowStartupLocation="CenterScreen"
+        Title="{Binding Title}" Height="150" Width="400"
         ShowInTaskbar="False"
+        WindowStartupLocation="CenterScreen"
         d:DataContext="{d:DesignInstance Type=vm:WebsiteFormViewModel, IsDesignTimeCreatable=False}">
     <Window.Resources>
         <Style TargetType="TextBox">
@@ -32,10 +32,11 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Label Grid.Column="0" Grid.Row="0" Content="Name" />
-        <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding WebsiteForm.Name}"
+        <TextBox Grid.Column="1" Grid.Row="0" Name="txtName"
+                 Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                  Validation.ErrorTemplate="{StaticResource validationTemplate}"/>
         <Label Grid.Column="0" Grid.Row="1" Content="URL" />
-        <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding WebsiteForm.Url}"
+        <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Url, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                  Validation.ErrorTemplate="{StaticResource validationTemplate}"/>
         <Grid Grid.Column="1" Grid.Row="2">
             <Grid.ColumnDefinitions>

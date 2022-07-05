@@ -18,6 +18,8 @@ namespace WebBackup.Core
         public FTPConnection? FTPConnection { get; set; }
 
         public SQLConnection? SQLConnection { get; set; }
+
+        public ICollection<Connection> Connections { get; set; } = new HashSet<Connection>();
         #endregion
     }
 }

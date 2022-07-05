@@ -8,10 +8,7 @@ namespace WebBackup.WPF.Services
 	{
 		public WBProfile()
 		{
-			CreateMap<WebsiteVM, Website>();
-			CreateMap<Website, WebsiteVM>();
-			CreateMap<FTPConnection, FTPConnectionVM>();
-			CreateMap<SQLConnection, SQLConnectionVM>();
+			// CreateMap<WebsiteVM, Website>().ReverseMap();
 		}
 	}
 }

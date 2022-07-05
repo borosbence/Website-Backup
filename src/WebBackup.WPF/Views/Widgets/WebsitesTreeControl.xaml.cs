@@ -23,6 +23,7 @@ namespace WebBackup.WPF.Views
     /// </summary>
     public partial class WebsitesTreeControl : UserControl
     {
+
         public WebsitesTreeControl()
         {
             DataContext = Ioc.Default.GetRequiredService<WebsitesViewModel>();
@@ -32,7 +33,7 @@ namespace WebBackup.WPF.Views
         private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             var vm = DataContext as WebsitesViewModel;
-            if (e.NewValue is WebsiteVM website)
+            if (e.NewValue is Website website)
             {
                 vm.SelectedWebsite = website;
             }
