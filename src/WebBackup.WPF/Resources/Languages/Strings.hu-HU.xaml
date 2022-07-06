@@ -16,6 +16,6 @@
     <s:String x:Key="ConfirmDelete">Biztos, hogy törölni akarja az elemet?</s:String>
 
     <s:String x:Key="RequiredField">Kötelező mező.</s:String>
-    <s:String x:Key="Name">_Név</s:String>
-    <s:String x:Key="Url">_Url</s:String>
+    <s:String x:Key="lblName">_Név</s:String>
+    <s:String x:Key="lblUrl">_URL</s:String>
 </ResourceDictionary>

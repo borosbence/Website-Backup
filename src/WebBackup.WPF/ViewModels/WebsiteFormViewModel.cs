@@ -79,9 +79,9 @@ namespace WebBackup.WPF.ViewModels
         /// Validate the form and enable the Save button. On the first open, the input fields errors not shown.
         /// </summary>
         /// <returns>Form is valid.</returns>
-        private bool CanSave(object window)
+        public bool CanSave(object window)
         {
-            if (firstOpen)
+            if (firstOpen && id == 0)
             {
                 return firstOpen = false;
             }
@@ -115,7 +115,8 @@ namespace WebBackup.WPF.ViewModels
                 bool isUri = Uri.IsWellFormedUriString(url, UriKind.Absolute);
                 if (!isUri)
                 {
-                    return new("Url is not valid.");
+                    // TODO: localize
+                    return new("The Url field is not a valid fully-qualified http or https URL.");
                 }
             }
             return ValidationResult.Success;
