@@ -21,7 +21,6 @@ namespace WebBackup.WPF.Views
     {
         public MainWindow()
         {
-            
             InitializeComponent();
         }
 
@@ -30,6 +29,7 @@ namespace WebBackup.WPF.Views
             // TODO: change skin runtime
             App app = Application.Current as App;
             app.ActiveSkin = app.ActiveSkin == "Dark" ? "Default" : "Dark";
+            LanguageSwitcher.ChangeLanguage("hu-Hu");
         }
     }
 }

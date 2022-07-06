@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebBackup.Core;
 using WebBackup.Core.Repositories;
+using WebBackup.Infrastructure.Services;
 using WebBackup.WPF.Services;
 using WebBackup.WPF.Views;
 
@@ -16,19 +17,19 @@ namespace WebBackup.WPF.ViewModels
     {
         private readonly IGenericRepository<Website> _repository;
         private readonly IWindowService _windowService;
+        private readonly IStringResourceService _stringResource;
 
-        public WebsitesViewModel(IGenericRepository<Website> repository, IWindowService windowService)
+        public WebsitesViewModel(IGenericRepository<Website> repository, IWindowService windowService, IStringResourceService stringResource)
         {
             _repository = repository;
             _windowService = windowService;
+            _stringResource = stringResource;
             Task.Run(async () => await LoadData()).Wait();
             OnActivated();
         }
 
         public ObservableCollection<Website> Websites { get; set; } = new ObservableCollection<Website>();
 
-        //[ObservableProperty]
-        //private WebsiteVM? selectedWebsite;
         [ObservableProperty]
         private Website? selectedWebsite;
 
@@ -41,14 +42,15 @@ namespace WebBackup.WPF.ViewModels
             }
             //var wfVM = new WebsiteFormViewModel(selectedWebsite, _repository, _windowService);
             //_windowService.ShowDialog<WebsiteFormWindow>(wfVM);
-            _windowService.ShowDialog<WebsiteFormWindow>();
+            _windowService.ShowDialog<WebsiteFormWindow, MainWindow>();
         }
 
         [ICommand]
         private async Task DeleteAsync(Website selectedWebsite)
         {
-            // TODO: localize
-            bool confirmed = _windowService.ConfirmDelete("Delete Website", "Confirm Delete?");
+            bool confirmed = _windowService.ConfirmDelete(
+                _stringResource.GetValue("DeleteWebsite"),
+                _stringResource.GetValue("ConfirmDelete"));
             if (confirmed)
             {
                 await _repository.DeleteAsync(selectedWebsite);
@@ -63,7 +65,7 @@ namespace WebBackup.WPF.ViewModels
         {
             Websites.Clear();
             var dbList = await _repository.GetAllAsync(x => x.FTPConnection, y => y.SQLConnection);
-            // Build connections to websites
+            // Build website connections
             dbList.ForEach(website => {
                 website.Connections.AddIfNotNull(website.FTPConnection);
                 website.Connections.AddIfNotNull(website.SQLConnection);

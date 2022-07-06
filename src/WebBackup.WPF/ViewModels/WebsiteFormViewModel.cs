@@ -31,13 +31,23 @@ namespace WebBackup.WPF.ViewModels
             firstOpen = true;
         }
 
-        private bool firstOpen;
-        private readonly int id;
-
+        /// <summary>
+        /// Title of the Dialog window.
+        /// </summary>
         [ObservableProperty]
         private string title = "New Website";
+        /// <summary>
+        /// This is the first opening of the dialog.
+        /// </summary>
+        private bool firstOpen;
+        /// <summary>
+        /// Website identifier.
+        /// </summary>
+        private readonly int id;
+        /// <summary>
+        /// Website name.
+        /// </summary>
         private string name = string.Empty;
-
         [Required(AllowEmptyStrings = false)]
         public string Name
         {
@@ -48,7 +58,9 @@ namespace WebBackup.WPF.ViewModels
                 SaveCommand.NotifyCanExecuteChanged();
             }
         }
-
+        /// <summary>
+        /// Website URL address.
+        /// </summary>
         private string? url;
         [CustomValidation(typeof(WebsiteFormViewModel), nameof(ValidateUrl))]
         public string? Url
@@ -64,9 +76,9 @@ namespace WebBackup.WPF.ViewModels
         public IAsyncRelayCommand<object> SaveCommand { get; }
 
         /// <summary>
-        /// Validate the form, and enable the Save button.
+        /// Validate the form and enable the Save button. On the first open, the input fields errors not shown.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Form is valid.</returns>
         private bool CanSave(object window)
         {
             if (firstOpen)

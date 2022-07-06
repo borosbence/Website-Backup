@@ -9,6 +9,7 @@ using WebBackup.Core;
 using WebBackup.Core.Repositories;
 using WebBackup.Infrastructure.Data;
 using WebBackup.Infrastructure.Repositories;
+using WebBackup.Infrastructure.Services;
 using WebBackup.WPF.Services;
 using WebBackup.WPF.ViewModels;
 
@@ -47,6 +48,7 @@ namespace WebBackup.WPF
             // Scoped - Repositories
             services.AddScoped<IGenericRepository<Website>, GenericRepository<Website, WBContext>>();
             // Singleton - Services
+            services.AddSingleton<IStringResourceService, StringResourceService>();
             services.AddSingleton<IWindowService, WindowService>();
             // services.AddAutoMapper(typeof(WBProfile));
             // Transient - ViewModels

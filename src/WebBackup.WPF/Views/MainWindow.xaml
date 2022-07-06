@@ -21,12 +21,14 @@
         <ContentControl />
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="150" MinWidth="5"/>
+                <ColumnDefinition Width="1*" MinWidth="5"/>
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" MinWidth="5"/>
+                <ColumnDefinition Width="4*" MinWidth="5"/>
             </Grid.ColumnDefinitions>
             <local:WebsitesTreeControl Grid.Column="0" />
-            <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch"
+            <GridSplitter Grid.Column="1" Width="5"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Stretch"
                           ResizeBehavior="PreviousAndNext" />
             <local:FileBrowserControl Grid.Column="2" />
         </Grid>

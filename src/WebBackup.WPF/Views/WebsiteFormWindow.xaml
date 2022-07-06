@@ -6,10 +6,10 @@
         xmlns:local="clr-namespace:WebBackup.WPF.Views"
         xmlns:vm="clr-namespace:WebBackup.WPF.ViewModels"
         mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance Type=vm:WebsiteFormViewModel, IsDesignTimeCreatable=False}"
         Title="{Binding Title}" Height="150" Width="400"
-        ShowInTaskbar="False"
-        WindowStartupLocation="CenterScreen"
-        d:DataContext="{d:DesignInstance Type=vm:WebsiteFormViewModel, IsDesignTimeCreatable=False}">
+        ShowInTaskbar="False" WindowStyle="ToolWindow" WindowStartupLocation="CenterScreen"
+        FocusManager.FocusedElement="{Binding ElementName=txtName}">
     <Window.Resources>
         <Style TargetType="TextBox">
             <Setter Property="TextWrapping" Value="Wrap" />
@@ -21,7 +21,7 @@
             <Setter Property="Width" Value="75" />
         </Style>
     </Window.Resources>
-    <Grid Margin="5">
+    <Grid Margin="5" FocusManager.IsFocusScope="True">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
@@ -31,12 +31,19 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Label Grid.Column="0" Grid.Row="0" Content="Name" />
-        <TextBox Grid.Column="1" Grid.Row="0" Name="txtName"
+        <Label Grid.Column="0" Grid.Row="0" 
+               Content="{DynamicResource Name}"
+               Target="{Binding ElementName=txtName}"/>
+        <TextBox Name="txtName"
+                 Grid.Column="1" Grid.Row="0" 
                  Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                  Validation.ErrorTemplate="{StaticResource validationTemplate}"/>
-        <Label Grid.Column="0" Grid.Row="1" Content="URL" />
-        <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Url, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+        <Label Grid.Column="0" Grid.Row="1" 
+               Content="{DynamicResource Url}" 
+               Target="{Binding ElementName=txtUrl}"/>
+        <TextBox Name="txtUrl"
+                 Grid.Column="1" Grid.Row="1" 
+                 Text="{Binding Url, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                  Validation.ErrorTemplate="{StaticResource validationTemplate}"/>
         <Grid Grid.Column="1" Grid.Row="2">
             <Grid.ColumnDefinitions>
