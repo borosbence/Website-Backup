@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Windows.Data;
 
 namespace WebBackup.WPF
 {
@@ -12,6 +13,11 @@ namespace WebBackup.WPF
             {
                 list.Add(item);
             }
+        }
+
+        public static void Refresh<T>(this ObservableCollection<T> value)
+        {
+            CollectionViewSource.GetDefaultView(value).Refresh();
         }
 
         public static void ReplaceItem<T>(this ObservableCollection<T> items, Func<T, bool> predicate, T newItem)

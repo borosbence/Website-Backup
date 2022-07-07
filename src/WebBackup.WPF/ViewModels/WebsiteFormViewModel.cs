@@ -20,9 +20,8 @@ namespace WebBackup.WPF.ViewModels
             Website? selected = WeakReferenceMessenger.Default.Send<WebsiteRequestMessage>().Response;
             if (selected != null)
             {
-                id = selected.Id;
-                name = selected.Name;
-                url = selected.Url;
+                _website = selected;
+                // TODO: localize
                 Title = "Edit Website";
             }
             _repository = repository;
@@ -41,59 +40,39 @@ namespace WebBackup.WPF.ViewModels
         /// This is the first opening of the dialog.
         /// </summary>
         private bool firstOpen;
-        /// <summary>
-        /// Website identifier.
-        /// </summary>
-        private readonly int id;
-        /// <summary>
-        /// Website name.
-        /// </summary>
-        private string name = string.Empty;
+
+        private readonly Website _website = new();
+
+        private int Id => _website.Id;
+
         [Required(AllowEmptyStrings = false)]
         public string Name
         {
-            get => name;
-            set
-            {
-                SetProperty(ref name, value, true);
+            get => _website.Name;
+            set {
+                SetProperty(_website.Name, value, _website, (w, name) => w.Name = name, true);
                 SaveCommand.NotifyCanExecuteChanged();
             }
         }
-        /// <summary>
-        /// Website URL address.
-        /// </summary>
-        private string? url;
+
         [CustomValidation(typeof(WebsiteFormViewModel), nameof(ValidateUrl))]
         public string? Url
         {
-            get => url;
+            get => _website.Url;
             set
             {
-                SetProperty(ref url, value, true);
+                SetProperty(_website.Name, value, _website, (w, url) => w.Url = url, true);
                 SaveCommand.NotifyCanExecuteChanged();
             }
         }
 
         public IAsyncRelayCommand<object> SaveCommand { get; }
 
-        /// <summary>
-        /// Validate the form and enable the Save button. On the first open, the input fields errors not shown.
-        /// </summary>
-        /// <returns>Form is valid.</returns>
-        public bool CanSave(object window)
-        {
-            if (firstOpen && id == 0)
-            {
-                return firstOpen = false;
-            }
-            ValidateAllProperties();
-            return !HasErrors;
-        }
-
         private async Task SaveAsync(object window)
         {
             // TODO: create ctor?
-            var website = new Website { Id = id, Name = name, Url = url};
+            // var website = new Website { Id = Id, Name = Name, Url = Url};
+            var website = _website;
             bool exists = await _repository.ExistsAsync(website.Id);
             if (exists)
             {
@@ -107,6 +86,21 @@ namespace WebBackup.WPF.ViewModels
             // Notify collection
             WeakReferenceMessenger.Default.Send(new WebsiteChangedMessage(website));
             _windowService.Close(window);
+        }
+
+        /// <summary>
+        /// Validate the form and enable the Save button. On the first open, the input fields errors not shown.
+        /// </summary>
+        /// <returns>Form is valid.</returns>
+        public bool CanSave(object window)
+        {
+            // if (firstOpen && id == 0)
+            if (firstOpen && Id == 0)
+            {
+                return firstOpen = false;
+            }
+            ValidateAllProperties();
+            return !HasErrors;
         }
 
         public static ValidationResult? ValidateUrl(string? url)

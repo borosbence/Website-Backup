@@ -2,9 +2,14 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Data;
+using System.Windows.Threading;
 using WebBackup.Core;
 using WebBackup.Core.Repositories;
 using WebBackup.WPF.Services;
@@ -18,16 +23,21 @@ namespace WebBackup.WPF.ViewModels
         private readonly IWindowService _windowService;
         private readonly IStringResourceService _stringResource;
 
+        private readonly object _lock = new object();
+
         public WebsitesViewModel(IGenericRepository<Website> repository, IWindowService windowService, IStringResourceService stringResource)
         {
             _repository = repository;
             _windowService = windowService;
             _stringResource = stringResource;
-            Task.Run(async () => await LoadData()).Wait();
+            // async load UI collection
+            // Dispatcher.CurrentDispatcher.BeginInvoke(async() => await LoadData());
+            BindingOperations.EnableCollectionSynchronization(Websites, _lock);
+            Task.Run(async () => await LoadData());
             OnActivated();
         }
 
-        public ObservableCollection<Website> Websites { get; set; } = new ObservableCollection<Website>();
+        public ObservableCollection<Website> Websites { get; set; } = new();
 
         [ObservableProperty]
         private Website? selectedWebsite;
@@ -54,6 +64,8 @@ namespace WebBackup.WPF.ViewModels
             {
                 await _repository.DeleteAsync(selectedWebsite);
                 Websites.Remove(selectedWebsite);
+                // Notify Main Window status bar
+                Messenger.Send(new WebsiteCountChangedMessage(-1));
             }
         }
 
@@ -62,14 +74,16 @@ namespace WebBackup.WPF.ViewModels
         /// </summary>
         private async Task LoadData()
         {
+            List<Website>? dbList = await _repository.GetAllAsync(x => x.FTPConnection, y => y.SQLConnection);
+            // lock(_lock)
             Websites.Clear();
-            var dbList = await _repository.GetAllAsync(x => x.FTPConnection, y => y.SQLConnection);
-            // Build website connections
-            dbList.ForEach(website => {
+            foreach (Website website in dbList)
+            {
                 website.Connections.AddIfNotNull(website.FTPConnection);
                 website.Connections.AddIfNotNull(website.SQLConnection);
+                // Build website connections
                 Websites.Add(website);
-            });
+            }
         }
 
         protected override void OnActivated()
@@ -80,18 +94,23 @@ namespace WebBackup.WPF.ViewModels
 
         private void Receive(WebsiteChangedMessage message)
         {
-            var websiteVM = message.Value;
-            var existing = Websites.FirstOrDefault(x => x.Id == websiteVM.Id);
+            Website website = message.Value;
+            // Website existing = Websites.FirstOrDefault(x => x.Id == website.Id);
+            bool exists = Websites.Any(x => x.Id == website.Id);
             // Replace, update existing element
-            if (existing != null)
+            if (exists)
             {
-                var index = Websites.IndexOf(existing);
-                Websites[index] = websiteVM;
+                //int index = Websites.IndexOf(existing);
+                // Websites[index] = website;
+                // TODO: refresh new item???
+                Websites.Refresh();
             }
             // Add new element
             else
             {
-                Websites.Add(websiteVM);
+                Websites.Add(website);
+                // Notify Main Window status bar
+                Messenger.Send(new WebsiteCountChangedMessage(1));
             }
         }
 

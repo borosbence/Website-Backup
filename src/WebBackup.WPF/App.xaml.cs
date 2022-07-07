@@ -50,6 +50,7 @@ namespace WebBackup.WPF
             services.AddSingleton<IStringResourceService, StringResourceService>();
             services.AddSingleton<IWindowService, WindowService>();
             // Transient - ViewModels
+            services.AddTransient<MainViewModel>();
             services.AddTransient<WebsitesViewModel>();
             services.AddTransient<WebsiteFormViewModel>();
 

@@ -17,22 +17,14 @@ using WebBackup.WPF.ViewModels;
 namespace WebBackup.WPF.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for FTPConnectionFormWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class FTPConnectionFormWindow : Window
     {
-        public MainWindow()
+        public FTPConnectionFormWindow()
         {
-            DataContext = Ioc.Default.GetRequiredService<MainViewModel>();
+            DataContext = Ioc.Default.GetRequiredService<WebsiteFormViewModel>();
             InitializeComponent();
-        }
-
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            // TODO: change skin runtime
-            App app = Application.Current as App;
-            app.ActiveSkin = app.ActiveSkin == "Dark" ? "Default" : "Dark";
-            LanguageSwitcher.ChangeLanguage("hu-Hu");
         }
     }
 }
