@@ -34,6 +34,7 @@ namespace WebBackup.WPF.ViewModels
         /// <summary>
         /// Title of the Dialog window.
         /// </summary>
+        // TODO: localize
         [ObservableProperty]
         private string title = "New Website";
         /// <summary>

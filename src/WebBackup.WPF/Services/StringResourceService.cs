@@ -1,8 +1,11 @@
 ﻿using System.Windows;
-using WebBackup.Infrastructure.Services;
 
 namespace WebBackup.WPF.Services
 {
+    public interface IStringResourceService
+    {
+        string? GetValue(string resourceKey);
+    }
     public class StringResourceService : IStringResourceService
     {
         public string? GetValue(string resourceKey)
