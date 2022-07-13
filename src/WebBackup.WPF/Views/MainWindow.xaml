@@ -14,17 +14,44 @@
             <MenuItem Header="{DynamicResource File}" />
             <MenuItem Header="Change Skin" Click="MenuItem_Click" />
         </Menu>
+        <ToolBarTray DockPanel.Dock="Top">
+            <ToolBar ToolBarTray.IsLocked="True" >
+                <Button>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Style="{StaticResource MenuIcon}"
+                                   FontFamily="{StaticResource Icons}"
+                                   Text="{StaticResource IconAdd}"/>
+                        <TextBlock Text=" New"/>
+                    </StackPanel>
+                </Button>
+                <Button>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Style="{StaticResource MenuIcon}"
+                                   FontFamily="{StaticResource Icons}"
+                                   Text="{StaticResource IconEdit}"/>
+                        <TextBlock Text=" Edit"/>
+                    </StackPanel>
+                </Button>
+                <Button>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Style="{StaticResource MenuIcon}"
+                                   FontFamily="{StaticResource Icons}"
+                                   Text="{StaticResource IconDelete}"/>
+                        <TextBlock Text=" Delete"/>
+                    </StackPanel>
+                </Button>
+            </ToolBar>
+        </ToolBarTray>
         <StatusBar DockPanel.Dock="Bottom">
             <StatusBarItem>
                 <TextBlock Text="{Binding WebsiteCount, StringFormat='\{0\} Websites'}"/>
             </StatusBarItem>
         </StatusBar>
-        <ContentControl />
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*" MinWidth="5"/>
+                <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="4*" MinWidth="5"/>
+                <ColumnDefinition Width="4*"/>
             </Grid.ColumnDefinitions>
             <local:WebsitesTreeControl Grid.Column="0" />
             <GridSplitter Grid.Column="1" Width="5"

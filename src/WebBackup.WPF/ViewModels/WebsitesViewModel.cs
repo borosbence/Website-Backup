@@ -2,14 +2,11 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Data;
-using System.Windows.Threading;
 using WebBackup.Core;
 using WebBackup.Core.Repositories;
 using WebBackup.WPF.Services;
@@ -100,7 +97,7 @@ namespace WebBackup.WPF.ViewModels
             // Replace, update existing element
             if (exists)
             {
-                //int index = Websites.IndexOf(existing);
+                // int index = Websites.IndexOf(existing);
                 // Websites[index] = website;
                 // TODO: refresh new item???
                 Websites.Refresh();

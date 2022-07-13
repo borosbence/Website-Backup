@@ -5,4 +5,5 @@
     <s:String x:Key="IconDelete">&#xe74d;</s:String>
     <s:String x:Key="IconDiagnostic">&#xe9d9;</s:String>
     <s:String x:Key="IconEdit">&#xe70f;</s:String>
+    <s:String x:Key="IconSave">&#xea35;</s:String>
 </ResourceDictionary>

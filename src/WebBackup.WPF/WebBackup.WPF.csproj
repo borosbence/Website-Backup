@@ -8,10 +8,6 @@
 	<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
 	<EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="Resources\Images\SplashScreen_450.png" />
-  </ItemGroup>
 	
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="7.1.2" />
