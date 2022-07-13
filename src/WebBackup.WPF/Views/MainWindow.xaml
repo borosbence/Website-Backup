@@ -4,8 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WebBackup.WPF.Views"
+        xmlns:vm="clr-namespace:WebBackup.WPF.ViewModels"
         mc:Ignorable="d"
-        x:Name="mainWindow"
+        d:DataContext="{d:DesignInstance Type=vm:MainViewModel, IsDesignTimeCreatable=False}"
         Title="MainWindow" Height="450" Width="800" 
         WindowStartupLocation="CenterScreen">
     <DockPanel>
@@ -13,20 +14,49 @@
             <MenuItem Header="{DynamicResource File}" />
             <MenuItem Header="Change Skin" Click="MenuItem_Click" />
         </Menu>
+        <ToolBarTray DockPanel.Dock="Top">
+            <ToolBar ToolBarTray.IsLocked="True" >
+                <Button>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Style="{StaticResource MenuIcon}"
+                                   FontFamily="{StaticResource Icons}"
+                                   Text="{StaticResource IconAdd}"/>
+                        <TextBlock Text=" New"/>
+                    </StackPanel>
+                </Button>
+                <Button>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Style="{StaticResource MenuIcon}"
+                                   FontFamily="{StaticResource Icons}"
+                                   Text="{StaticResource IconEdit}"/>
+                        <TextBlock Text=" Edit"/>
+                    </StackPanel>
+                </Button>
+                <Button>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Style="{StaticResource MenuIcon}"
+                                   FontFamily="{StaticResource Icons}"
+                                   Text="{StaticResource IconDelete}"/>
+                        <TextBlock Text=" Delete"/>
+                    </StackPanel>
+                </Button>
+            </ToolBar>
+        </ToolBarTray>
         <StatusBar DockPanel.Dock="Bottom">
             <StatusBarItem>
-                <TextBlock Text="0 Websites" />
+                <TextBlock Text="{Binding WebsiteCount, StringFormat='\{0\} Websites'}"/>
             </StatusBarItem>
         </StatusBar>
-        <ContentControl />
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="150" MinWidth="5"/>
+                <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" MinWidth="5"/>
+                <ColumnDefinition Width="4*"/>
             </Grid.ColumnDefinitions>
             <local:WebsitesTreeControl Grid.Column="0" />
-            <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch"
+            <GridSplitter Grid.Column="1" Width="5"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Stretch"
                           ResizeBehavior="PreviousAndNext" />
             <local:FileBrowserControl Grid.Column="2" />
         </Grid>

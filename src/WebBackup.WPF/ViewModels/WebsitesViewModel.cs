@@ -1,11 +1,12 @@
-﻿using AutoMapper;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Data;
 using WebBackup.Core;
 using WebBackup.Core.Repositories;
 using WebBackup.WPF.Services;
@@ -16,45 +17,52 @@ namespace WebBackup.WPF.ViewModels
     public partial class WebsitesViewModel : ObservableRecipient, IRecipient<WebsiteRequestMessage>
     {
         private readonly IGenericRepository<Website> _repository;
-        private readonly IMapper _mapper;
         private readonly IWindowService _windowService;
+        private readonly IStringResourceService _stringResource;
 
-        public WebsitesViewModel(IGenericRepository<Website> repository, IMapper mapper, IWindowService windowService)
+        private readonly object _lock = new object();
+
+        public WebsitesViewModel(IGenericRepository<Website> repository, IWindowService windowService, IStringResourceService stringResource)
         {
             _repository = repository;
-            _mapper = mapper;
             _windowService = windowService;
-            Task.Run(async () => await LoadData()).Wait();
+            _stringResource = stringResource;
+            // async load UI collection
+            // Dispatcher.CurrentDispatcher.BeginInvoke(async() => await LoadData());
+            BindingOperations.EnableCollectionSynchronization(Websites, _lock);
+            Task.Run(async () => await LoadData());
             OnActivated();
         }
 
-        public ObservableCollection<WebsiteVM> Websites { get; set; } = new ObservableCollection<WebsiteVM>();
+        public ObservableCollection<Website> Websites { get; set; } = new();
 
         [ObservableProperty]
-        private WebsiteVM? selectedWebsite;
+        private Website? selectedWebsite;
 
         [ICommand]
         private void ShowWebsite(string param)
         {
             if (!string.IsNullOrEmpty(param))
             {
-                selectedWebsite = new();
+                selectedWebsite = null;
             }
-            //var wfVM = new WebsiteFormViewModel(selectedWebsite, _repository, _mapper, _windowService);
+            //var wfVM = new WebsiteFormViewModel(selectedWebsite, _repository, _windowService);
             //_windowService.ShowDialog<WebsiteFormWindow>(wfVM);
-            _windowService.ShowDialog<WebsiteFormWindow>();
+            _windowService.ShowDialog<WebsiteFormWindow, MainWindow>();
         }
 
         [ICommand]
-        private async Task DeleteAsync(WebsiteVM selectedWebsite)
+        private async Task DeleteAsync(Website selectedWebsite)
         {
-            // TODO: localize
-            bool confirmed = _windowService.ConfirmDelete("Delete Website", "Confirm Delete?");
+            bool confirmed = _windowService.ConfirmDelete(
+                _stringResource.GetValue("DeleteWebsite"),
+                _stringResource.GetValue("ConfirmDelete"));
             if (confirmed)
             {
-                var website = _mapper.Map<Website>(selectedWebsite);
-                await _repository.DeleteAsync(website);
+                await _repository.DeleteAsync(selectedWebsite);
                 Websites.Remove(selectedWebsite);
+                // Notify Main Window status bar
+                Messenger.Send(new WebsiteCountChangedMessage(-1));
             }
         }
 
@@ -63,13 +71,14 @@ namespace WebBackup.WPF.ViewModels
         /// </summary>
         private async Task LoadData()
         {
+            List<Website>? dbList = await _repository.GetAllAsync(x => x.FTPConnection, y => y.SQLConnection);
+            // lock(_lock)
             Websites.Clear();
-            var dbList = await _repository.GetAllAsync(x => x.FTPConnection, y => y.SQLConnection);
-            foreach (var dbRecord in dbList)
+            foreach (Website website in dbList)
             {
-                var website = _mapper.Map<WebsiteVM>(dbRecord);
                 website.Connections.AddIfNotNull(website.FTPConnection);
                 website.Connections.AddIfNotNull(website.SQLConnection);
+                // Build website connections
                 Websites.Add(website);
             }
         }
@@ -82,18 +91,23 @@ namespace WebBackup.WPF.ViewModels
 
         private void Receive(WebsiteChangedMessage message)
         {
-            var websiteVM = message.Value;
-            var existing = Websites.FirstOrDefault(x => x.Id == websiteVM.Id);
+            Website website = message.Value;
+            // Website existing = Websites.FirstOrDefault(x => x.Id == website.Id);
+            bool exists = Websites.Any(x => x.Id == website.Id);
             // Replace, update existing element
-            if (existing != null)
+            if (exists)
             {
-                var index = Websites.IndexOf(existing);
-                Websites[index] = websiteVM;
+                // int index = Websites.IndexOf(existing);
+                // Websites[index] = website;
+                // TODO: refresh new item???
+                Websites.Refresh();
             }
             // Add new element
             else
             {
-                Websites.Add(websiteVM);
+                Websites.Add(website);
+                // Notify Main Window status bar
+                Messenger.Send(new WebsiteCountChangedMessage(1));
             }
         }
 
@@ -104,13 +118,13 @@ namespace WebBackup.WPF.ViewModels
 
     }
 
-    public class WebsiteChangedMessage : ValueChangedMessage<WebsiteVM>
+    public class WebsiteChangedMessage : ValueChangedMessage<Website>
     {
-        public WebsiteChangedMessage(WebsiteVM value) : base(value)
+        public WebsiteChangedMessage(Website value) : base(value)
         {
         }
     }
-    public class WebsiteRequestMessage : RequestMessage<WebsiteVM?>
+    public class WebsiteRequestMessage : RequestMessage<Website?>
     {
 
     }

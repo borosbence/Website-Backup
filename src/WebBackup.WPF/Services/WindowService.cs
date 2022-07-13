@@ -1,24 +1,26 @@
-﻿using System.Windows;
+﻿using System.Linq;
+using System.Windows;
 
 namespace WebBackup.WPF.Services
 {
     public interface IWindowService
     {
-        void ShowDialog<T>(object? viewModel = null) where T : Window, new();
+        void ShowDialog<T, P>(object? viewModel = null) where T : Window, new() where P : Window;
         void Close(object window);
-        bool ConfirmDelete(string title, string caption);
+        bool ConfirmDelete(string? title, string? caption);
         
     }
 
     public class WindowService : IWindowService
     {
-        public void ShowDialog<T>(object? viewModel = null) where T : Window, new()
+        public void ShowDialog<T, P>(object? viewModel = null) where T : Window, new() where P : Window
         {
             Window window = new T();
             if (viewModel != null)
             {
                 window.DataContext = viewModel;
             }
+            window.Owner = Application.Current.Windows.OfType<P>().SingleOrDefault(x => x.IsActive);
             window.ShowDialog();
         }
 
@@ -30,7 +32,7 @@ namespace WebBackup.WPF.Services
             }
         }
 
-        public bool ConfirmDelete(string title, string caption)
+        public bool ConfirmDelete(string? title, string? caption)
         {
             MessageBoxResult mBoxResult = MessageBox.Show(caption, title, MessageBoxButton.YesNo, MessageBoxImage.Warning);
             bool result = false;

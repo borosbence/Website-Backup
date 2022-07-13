@@ -13,5 +13,10 @@
     <s:String x:Key="NewSQL">New SQL connection</s:String>
     <s:String x:Key="NewWebsite">New website</s:String>
     <s:String x:Key="TestConnection">Test connection</s:String>
+    <s:String x:Key="ConfirmDelete">Are you sure you want to delete this item?</s:String>
+
     <s:String x:Key="RequiredField">This field is required.</s:String>
+    <s:String x:Key="lblName">_Name</s:String>
+    <s:String x:Key="lblUrl">_URL</s:String>
+   
 </ResourceDictionary>

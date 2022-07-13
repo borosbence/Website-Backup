@@ -5,5 +5,11 @@
 
     <Style TargetType="Menu" BasedOn="{StaticResource BaseDefaultStyle}" />
     <Style TargetType="MenuItem" BasedOn="{StaticResource BaseDefaultStyle}" />
-    
+    <Style TargetType="ToolBarTray">
+        <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.MenuBarBrushKey}}" />
+    </Style>
+    <Style x:Key="{x:Static ToolBar.ButtonStyleKey}" TargetType="Button">
+        <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
+    </Style>
+
 </ResourceDictionary>

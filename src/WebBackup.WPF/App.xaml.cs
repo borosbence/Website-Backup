@@ -47,9 +47,10 @@ namespace WebBackup.WPF
             // Scoped - Repositories
             services.AddScoped<IGenericRepository<Website>, GenericRepository<Website, WBContext>>();
             // Singleton - Services
+            services.AddSingleton<IStringResourceService, StringResourceService>();
             services.AddSingleton<IWindowService, WindowService>();
-            services.AddAutoMapper(typeof(WBProfile));
             // Transient - ViewModels
+            services.AddTransient<MainViewModel>();
             services.AddTransient<WebsitesViewModel>();
             services.AddTransient<WebsiteFormViewModel>();
 

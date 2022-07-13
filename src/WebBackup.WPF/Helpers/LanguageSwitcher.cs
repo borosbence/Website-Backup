@@ -34,7 +34,12 @@ namespace WebBackup.WPF
                 var cultureInfo = Thread.CurrentThread.CurrentUICulture;
                 languageName = cultureInfo.Name;
             }
+            // Change the language
+            ChangeLanguage(languageName);
+        }
 
+        public static void ChangeLanguage(string languageName)
+        {
             // Make new Resource Dictionary
             var dict = new ResourceDictionary();
             try
@@ -49,6 +54,8 @@ namespace WebBackup.WPF
 
             // Add Resource Dictionary to application
             Application.Current.Resources.MergedDictionaries.Add(dict);
+
+            // TODO: save to appsettings
         }
 
         /// <summary>

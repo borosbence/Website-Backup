@@ -6,7 +6,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WebBackup.WPF.Views"
              xmlns:vm="clr-namespace:WebBackup.WPF.ViewModels"
-             xmlns:model="clr-namespace:WebBackup.WPF.ViewModels"   
+             xmlns:model="clr-namespace:WebBackup.Core;assembly=WebBackup.Core"   
              xmlns:conv="clr-namespace:WebBackup.WPF.Converters"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800"
@@ -21,13 +21,16 @@
             </Style.Resources>
         </Style>
         <conv:ObjectToVisibilityConverter x:Key="ObjectToVisible"/>
+        <conv:ObjectToBoolConverter x:Key="ObjectToBool"/>
     </UserControl.Resources>
     <Grid>
-        <TreeView ItemsSource="{Binding Websites}" SelectedItemChanged="TreeView_SelectedItemChanged">
+        <TreeView ItemsSource="{Binding Websites}" SelectedItemChanged="TreeView_SelectedItemChanged"
+                  Validation.ErrorTemplate="{x:Null}">
             <TreeView.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="{DynamicResource NewWebsite}"
-                              Command="{Binding ShowWebsiteCommand}" CommandParameter="new">
+                              Command="{Binding ShowWebsiteCommand}"
+                              CommandParameter="new">
                         <MenuItem.Icon>
                             <TextBlock Text="{StaticResource IconAdd}" FontFamily="{StaticResource Icons}"/>
                         </MenuItem.Icon>
@@ -39,12 +42,10 @@
             </TreeView.InputBindings>
 
             <TreeView.Resources>
-                <HierarchicalDataTemplate DataType="{x:Type model:WebsiteVM}" ItemsSource="{Binding Connections}">
+                <HierarchicalDataTemplate DataType="{x:Type model:Website}" ItemsSource="{Binding Connections}">
                     <TextBlock Text="{Binding Name}">
                         <TextBlock.ContextMenu>
-                            <ContextMenu Visibility="{Binding DataContext.SelectedWebsite,
-                                Source={x:Reference WebsitesUC},
-                                Converter={StaticResource ObjectToVisible}}">
+                            <ContextMenu Visibility="{Binding DataContext.SelectedWebsite, Source={x:Reference WebsitesUC}, Converter={StaticResource ObjectToVisible}}">
                                 <MenuItem Header="{DynamicResource EditWebsite}" 
                                           Command="{Binding DataContext.ShowWebsiteCommand, Source={x:Reference WebsitesUC}}">
                                     <MenuItem.Icon>
@@ -63,12 +64,14 @@
                                     <MenuItem.Icon>
                                         <TextBlock Text="{StaticResource IconAdd}" FontFamily="{StaticResource Icons}"/>
                                     </MenuItem.Icon>
-                                    <MenuItem Header="{DynamicResource NewFTP}">
+                                    <MenuItem Header="{DynamicResource NewFTP}" 
+                                              IsEnabled="{Binding FTPConnection, Converter={StaticResource ObjectToBool}}">
                                         <MenuItem.Icon>
                                             <TextBlock Text="{StaticResource IconAdd}" FontFamily="{StaticResource Icons}"/>
                                         </MenuItem.Icon>
                                     </MenuItem>
-                                    <MenuItem Header="{DynamicResource NewSQL}">
+                                    <MenuItem Header="{DynamicResource NewSQL}"
+                                              IsEnabled="{Binding FTPConnection, Converter={StaticResource ObjectToBool}}">
                                         <MenuItem.Icon>
                                             <TextBlock Text="{StaticResource IconAdd}" FontFamily="{StaticResource Icons}"/>
                                         </MenuItem.Icon>
@@ -79,7 +82,7 @@
                     </TextBlock>
                 </HierarchicalDataTemplate>
 
-                <HierarchicalDataTemplate DataType="{x:Type model:FTPConnectionVM}">
+                <HierarchicalDataTemplate DataType="{x:Type model:FTPConnection}">
                     <TextBlock Text="FTP">
                         <TextBlock.ContextMenu>
                             <ContextMenu>
@@ -103,7 +106,7 @@
                     </TextBlock>
                 </HierarchicalDataTemplate>
 
-                <HierarchicalDataTemplate DataType="{x:Type model:SQLConnectionVM}">
+                <HierarchicalDataTemplate DataType="{x:Type model:SQLConnection}">
                     <TextBlock Text="SQL">
                         <TextBlock.ContextMenu>
                             <ContextMenu>
