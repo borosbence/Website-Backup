@@ -14,7 +14,7 @@
                 <local:SkinResourceDictionary SkinName="Dark" Source="/Resources/Skins/Dark.xaml" />
                 <local:SkinResourceDictionary SkinName="Default" Source="/Resources/Skins/Default.xaml" />
                 <!--Templates for Controls, Windows-->
-                <ResourceDictionary Source="/Resources/Templates/Validations.xaml" />
+                <ResourceDictionary Source="/Resources/Templates/Templates.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

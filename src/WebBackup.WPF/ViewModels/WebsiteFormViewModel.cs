@@ -68,10 +68,9 @@ namespace WebBackup.WPF.ViewModels
 
         public IAsyncRelayCommand<object> SaveCommand { get; }
 
+        // [ICommand(CanExecute = nameof(CanSave))]
         private async Task SaveAsync(object window)
         {
-            // TODO: create ctor?
-            // var website = new Website { Id = Id, Name = Name, Url = Url};
             var website = _website;
             bool exists = await _repository.ExistsAsync(website.Id);
             if (exists)
@@ -94,7 +93,6 @@ namespace WebBackup.WPF.ViewModels
         /// <returns>Form is valid.</returns>
         public bool CanSave(object window)
         {
-            // if (firstOpen && id == 0)
             if (firstOpen && Id == 0)
             {
                 return firstOpen = false;

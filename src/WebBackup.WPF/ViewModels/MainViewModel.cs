@@ -14,8 +14,8 @@ namespace WebBackup.WPF.ViewModels
         public MainViewModel(IGenericRepository<Website> websiteRepository)
         {
             _websiteRepository = websiteRepository;
-            Task.Run(async () => await LoadData());
-            // Task.Run(LoadData);
+            // Task.Run(async () => await LoadData());
+            Task.Run(LoadData);
             OnActivated();
         }
 

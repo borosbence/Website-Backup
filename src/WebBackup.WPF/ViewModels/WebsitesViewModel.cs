@@ -20,7 +20,7 @@ namespace WebBackup.WPF.ViewModels
         private readonly IWindowService _windowService;
         private readonly IStringResourceService _stringResource;
 
-        private readonly object _lock = new object();
+        private readonly object _lock = new();
 
         public WebsitesViewModel(IGenericRepository<Website> repository, IWindowService windowService, IStringResourceService stringResource)
         {
@@ -30,7 +30,7 @@ namespace WebBackup.WPF.ViewModels
             // async load UI collection
             // Dispatcher.CurrentDispatcher.BeginInvoke(async() => await LoadData());
             BindingOperations.EnableCollectionSynchronization(Websites, _lock);
-            Task.Run(async () => await LoadData());
+            Task.Run(LoadData);
             OnActivated();
         }
 
@@ -92,13 +92,11 @@ namespace WebBackup.WPF.ViewModels
         private void Receive(WebsiteChangedMessage message)
         {
             Website website = message.Value;
-            // Website existing = Websites.FirstOrDefault(x => x.Id == website.Id);
+            
             bool exists = Websites.Any(x => x.Id == website.Id);
             // Replace, update existing element
             if (exists)
             {
-                // int index = Websites.IndexOf(existing);
-                // Websites[index] = website;
                 // TODO: refresh new item???
                 Websites.Refresh();
             }
