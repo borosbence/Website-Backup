@@ -33,13 +33,18 @@ namespace WebBackup.WPF.Views
         private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             var vm = DataContext as WebsitesViewModel;
-            if (e.NewValue is Website website)
+            Type selectedType = e.NewValue.GetType();
+            if (selectedType == typeof(Website))
             {
-                vm.SelectedWebsite = website;
+                vm.SelectedWebItem = (Website)e.NewValue;
             }
-            else
+            else if (selectedType == typeof(FTPConnection))
             {
-                vm.SelectedWebsite = null;
+                vm.SelectedWebItem = (FTPConnection)e.NewValue;
+            }
+            else if (selectedType == typeof(SQLConnection))
+            {
+                vm.SelectedWebItem = (SQLConnection)e.NewValue;
             }
         }
     }

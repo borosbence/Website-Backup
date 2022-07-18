@@ -16,7 +16,8 @@
         </Menu>
         <ToolBarTray DockPanel.Dock="Top">
             <ToolBar ToolBarTray.IsLocked="True" >
-                <Button>
+                <Button Command="{Binding NewItemCommand}"
+                        CommandParameter="website">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Style="{StaticResource MenuIcon}"
                                    FontFamily="{StaticResource Icons}"
@@ -24,7 +25,8 @@
                         <TextBlock Text=" New"/>
                     </StackPanel>
                 </Button>
-                <Button>
+                <Button Command="{Binding EditItemCommand}"
+                        CommandParameter="{Binding SelectedWebItem}">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Style="{StaticResource MenuIcon}"
                                    FontFamily="{StaticResource Icons}"
@@ -32,7 +34,8 @@
                         <TextBlock Text=" Edit"/>
                     </StackPanel>
                 </Button>
-                <Button>
+                <Button Command="{Binding DeleteAsyncCommand}"
+                        CommandParameter="{Binding SelectedWebItem}">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Style="{StaticResource MenuIcon}"
                                    FontFamily="{StaticResource Icons}"

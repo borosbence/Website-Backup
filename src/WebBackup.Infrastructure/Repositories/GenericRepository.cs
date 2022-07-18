@@ -17,7 +17,7 @@ namespace WebBackup.Infrastructure.Repositories
             _contextFactory = contextFactory;
         }
 
-        private async Task<TContext> Context()
+        protected async Task<TContext> Context()
         {
             return await _contextFactory.CreateDbContextAsync();
         }

@@ -45,7 +45,7 @@ namespace WebBackup.WPF
             services.AddDbContextFactory<WBContext>(options =>
                 options.UseSqlite(connectionString, x => x.MigrationsAssembly("WebBackupDB.Infrastructure")));
             // Scoped - Repositories
-            services.AddScoped<IGenericRepository<Website>, GenericRepository<Website, WBContext>>();
+            services.AddScoped<IWebsiteRepository,WebsiteRepository>();
             // Singleton - Services
             services.AddSingleton<IStringResourceService, StringResourceService>();
             services.AddSingleton<IWindowService, WindowService>();

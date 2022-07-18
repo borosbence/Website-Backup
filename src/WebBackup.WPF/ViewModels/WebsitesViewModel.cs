@@ -1,77 +1,35 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using WebBackup.Core;
-using WebBackup.Core.Repositories;
+using WebBackup.Infrastructure.Repositories;
 using WebBackup.WPF.Services;
-using WebBackup.WPF.Views;
 
 namespace WebBackup.WPF.ViewModels
 {
-    public partial class WebsitesViewModel : ObservableRecipient, IRecipient<WebsiteRequestMessage>
+    public partial class WebsitesViewModel : BaseCommandsViewModel, IRecipient<WebsiteRequestMessage>
     {
-        private readonly IGenericRepository<Website> _repository;
-        private readonly IWindowService _windowService;
-        private readonly IStringResourceService _stringResource;
-
         private readonly object _lock = new();
 
-        public WebsitesViewModel(IGenericRepository<Website> repository, IWindowService windowService, IStringResourceService stringResource)
+        public WebsitesViewModel(IWebsiteRepository websiteRepository, IWindowService windowService, IStringResourceService stringResource) 
+            : base(websiteRepository, windowService, stringResource)
         {
-            _repository = repository;
-            _windowService = windowService;
-            _stringResource = stringResource;
-            // async load UI collection
-            // Dispatcher.CurrentDispatcher.BeginInvoke(async() => await LoadData());
             BindingOperations.EnableCollectionSynchronization(Websites, _lock);
-            Task.Run(LoadData);
-            OnActivated();
         }
 
         public ObservableCollection<Website> Websites { get; set; } = new();
 
-        [ObservableProperty]
-        private Website? selectedWebsite;
-
-        [ICommand]
-        private void ShowWebsite(string param)
-        {
-            if (!string.IsNullOrEmpty(param))
-            {
-                selectedWebsite = null;
-            }
-            //var wfVM = new WebsiteFormViewModel(selectedWebsite, _repository, _windowService);
-            //_windowService.ShowDialog<WebsiteFormWindow>(wfVM);
-            _windowService.ShowDialog<WebsiteFormWindow, MainWindow>();
-        }
-
-        [ICommand]
-        private async Task DeleteAsync(Website selectedWebsite)
-        {
-            bool confirmed = _windowService.ConfirmDelete(
-                _stringResource.GetValue("DeleteWebsite"),
-                _stringResource.GetValue("ConfirmDelete"));
-            if (confirmed)
-            {
-                await _repository.DeleteAsync(selectedWebsite);
-                Websites.Remove(selectedWebsite);
-                // Notify Main Window status bar
-                Messenger.Send(new WebsiteCountChangedMessage(-1));
-            }
-        }
-
         /// <summary>
         /// Load all websites from the repository.
         /// </summary>
-        private async Task LoadData()
+        protected override async Task LoadData()
         {
-            List<Website>? dbList = await _repository.GetAllAsync(x => x.FTPConnection, y => y.SQLConnection);
+            List<Website>? dbList = await _websiteRepository.GetAllAsync(x => x.FTPConnection, y => y.SQLConnection);
             // lock(_lock)
             Websites.Clear();
             foreach (Website website in dbList)
@@ -85,40 +43,74 @@ namespace WebBackup.WPF.ViewModels
 
         protected override void OnActivated()
         {
-            Messenger.Register<WebsiteChangedMessage>(this, (r, m) => Receive(m));
+            Messenger.Register<WebItemChangedMessage>(this, (r, m) => InsertOrRefresh(m));
+            Messenger.Register<WebItemRemovedMessage>(this, (r, m) => Remove(m));
             Messenger.Register<WebsiteRequestMessage>(this, (r, m) => Receive(m));
         }
 
-        private void Receive(WebsiteChangedMessage message)
+        private void InsertOrRefresh(WebItemChangedMessage m)
         {
-            Website website = message.Value;
-            
-            bool exists = Websites.Any(x => x.Id == website.Id);
-            // Replace, update existing element
-            if (exists)
+            if (m.Value == null)
             {
-                // TODO: refresh new item???
-                Websites.Refresh();
+                return;
             }
-            // Add new element
-            else
+            Type selectedType = m.Value.GetType();
+            if (selectedType == typeof(Website))
             {
-                Websites.Add(website);
-                // Notify Main Window status bar
-                Messenger.Send(new WebsiteCountChangedMessage(1));
+                Website website = (Website)m.Value;
+                bool exists = Websites.Any(x => x.Id == website.Id);
+                // Replace, update existing element
+                if (exists)
+                {
+                    // TODO: refresh new item???
+                    Websites.Refresh();
+                }
+                // Add new element
+                else
+                {
+                    Websites.Add(website);
+                    // Notify Main Window status bar
+                    Messenger.Send(new WebsiteCountChangedMessage(1));
+                }
+            }
+            else if (selectedType == typeof(FTPConnection))
+            {
+            }
+            else if (selectedType == typeof(SQLConnection))
+            {
             }
         }
 
-        public void Receive(WebsiteRequestMessage message)
+        private void Remove(WebItemRemovedMessage m)
         {
-            message.Reply(selectedWebsite);
+            if (m.Value == null)
+            {
+                return;
+            }
+            Type selectedType = m.Value.GetType();
+            if (selectedType == typeof(Website))
+            {
+                Website website = (Website)m.Value;
+                Websites.Remove(website);
+            }
+        }
+
+        public void Receive(WebsiteRequestMessage m)
+        {
+            m.Reply(selectedWebItem as Website);
         }
 
     }
 
-    public class WebsiteChangedMessage : ValueChangedMessage<Website>
+    public class WebItemChangedMessage : ValueChangedMessage<IEntity>
     {
-        public WebsiteChangedMessage(Website value) : base(value)
+        public WebItemChangedMessage(IEntity value) : base(value)
+        {
+        }
+    }
+    public class WebItemRemovedMessage : ValueChangedMessage<IEntity>
+    {
+        public WebItemRemovedMessage(IEntity value) : base(value)
         {
         }
     }

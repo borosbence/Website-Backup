@@ -8,5 +8,6 @@ namespace WebBackup.WPF.ViewModels
 {
     public class FTPConnectionViewModel
     {
+
     }
 }

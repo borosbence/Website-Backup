@@ -5,7 +5,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using WebBackup.Core;
-using WebBackup.Core.Repositories;
+using WebBackup.Infrastructure.Repositories;
 using WebBackup.WPF.Services;
 
 namespace WebBackup.WPF.ViewModels
@@ -13,19 +13,26 @@ namespace WebBackup.WPF.ViewModels
     [ObservableRecipient]
     public partial class WebsiteFormViewModel : ObservableValidator
     {
-        private readonly IGenericRepository<Website> _repository;
+        private readonly IWebsiteRepository _websiteRepository;
         private readonly IWindowService _windowService;
-        public WebsiteFormViewModel(IGenericRepository<Website> repository, IWindowService windowService)
+        private static IStringResourceService _stringResource;
+
+        public WebsiteFormViewModel(IWebsiteRepository repository, IWindowService windowService, IStringResourceService stringResource)
         {
             Website? selected = WeakReferenceMessenger.Default.Send<WebsiteRequestMessage>().Response;
+            _websiteRepository = repository;
+            _windowService = windowService;
+            _stringResource = stringResource;
             if (selected != null)
             {
                 _website = selected;
-                // TODO: localize
-                Title = "Edit Website";
+                Title = _stringResource.EditWebsite;
             }
-            _repository = repository;
-            _windowService = windowService;
+            else
+            {
+                Title = _stringResource.NewWebsite;
+            }
+
             SaveCommand = new AsyncRelayCommand<object>(SaveAsync, CanSave);
             firstOpen = true;
         }
@@ -33,9 +40,8 @@ namespace WebBackup.WPF.ViewModels
         /// <summary>
         /// Title of the Dialog window.
         /// </summary>
-        // TODO: localize
         [ObservableProperty]
-        private string title = "New Website";
+        private string? title;
         /// <summary>
         /// This is the first opening of the dialog.
         /// </summary>
@@ -72,18 +78,18 @@ namespace WebBackup.WPF.ViewModels
         private async Task SaveAsync(object window)
         {
             var website = _website;
-            bool exists = await _repository.ExistsAsync(website.Id);
+            bool exists = await _websiteRepository.ExistsAsync(website.Id);
             if (exists)
             {
-                await _repository.UpdateAsync(website);
+                await _websiteRepository.UpdateAsync(website);
             }
             else
             {
-                await _repository.InsertAsync(website);
+                await _websiteRepository.InsertAsync(website);
                 website.Id = website.Id;
             }
             // Notify collection
-            WeakReferenceMessenger.Default.Send(new WebsiteChangedMessage(website));
+            WeakReferenceMessenger.Default.Send(new WebItemChangedMessage(website));
             _windowService.Close(window);
         }
 
@@ -108,8 +114,7 @@ namespace WebBackup.WPF.ViewModels
                 bool isUri = Uri.IsWellFormedUriString(url, UriKind.Absolute);
                 if (!isUri)
                 {
-                    // TODO: localize
-                    return new("The Url field is not a valid fully-qualified http or https URL.");
+                    return new(_stringResource.InvalidURL);
                 }
             }
             return ValidationResult.Success;
