@@ -1,10 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
-using System;
 using System.Threading.Tasks;
-using WebBackup.Core;
-using WebBackup.Core.Repositories;
 using WebBackup.Infrastructure.Repositories;
 using WebBackup.WPF.Services;
 
@@ -33,7 +30,7 @@ namespace WebBackup.WPF.ViewModels
 
         private void UpdateSelected(WebItemChangedMessage m)
         {
-            SelectedWebItem = m.Value;
+            this.SelectedWebItem = m.Value.WebItem;
         }
 
         public void Receive(WebsiteCountChangedMessage message)

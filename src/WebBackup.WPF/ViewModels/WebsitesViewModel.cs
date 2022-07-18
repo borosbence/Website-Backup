@@ -3,7 +3,6 @@ using CommunityToolkit.Mvvm.Messaging.Messages;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using WebBackup.Core;
@@ -43,79 +42,73 @@ namespace WebBackup.WPF.ViewModels
 
         protected override void OnActivated()
         {
-            Messenger.Register<WebItemChangedMessage>(this, (r, m) => InsertOrRefresh(m));
-            Messenger.Register<WebItemRemovedMessage>(this, (r, m) => Remove(m));
+            Messenger.Register<WebItemChangedMessage>(this, (r, m) => Receive(m));
             Messenger.Register<WebsiteRequestMessage>(this, (r, m) => Receive(m));
         }
 
-        private void InsertOrRefresh(WebItemChangedMessage m)
-        {
-            if (m.Value == null)
-            {
-                return;
-            }
-            Type selectedType = m.Value.GetType();
-            if (selectedType == typeof(Website))
-            {
-                Website website = (Website)m.Value;
-                bool exists = Websites.Any(x => x.Id == website.Id);
-                // Replace, update existing element
-                if (exists)
-                {
-                    // TODO: refresh new item???
-                    Websites.Refresh();
-                }
-                // Add new element
-                else
-                {
-                    Websites.Add(website);
-                    // Notify Main Window status bar
-                    Messenger.Send(new WebsiteCountChangedMessage(1));
-                }
-            }
-            else if (selectedType == typeof(FTPConnection))
-            {
-            }
-            else if (selectedType == typeof(SQLConnection))
-            {
-            }
-        }
+        private bool newItem;
 
-        private void Remove(WebItemRemovedMessage m)
+        private void Receive(WebItemChangedMessage m)
         {
-            if (m.Value == null)
+            IEntity? webitem = m.Value.WebItem;
+            // TODO: new, after edit error
+            if (webitem == null)
             {
+                // newItem = true;
                 return;
             }
-            Type selectedType = m.Value.GetType();
-            if (selectedType == typeof(Website))
+
+            Type selectedType = webitem.GetType();
+
+            // TODO: service layer
+            switch (m.Value.Event)
             {
-                Website website = (Website)m.Value;
-                Websites.Remove(website);
+                case Event.Select:
+                    SelectedWebItem = webitem;
+                    break;
+                case Event.Add:
+                    if (selectedType == typeof(Website))
+                    {
+                        Website website = (Website)webitem;
+                        Websites.Add(website);
+                    }
+                    // TODO: add ftp connection 
+                    break;
+                case Event.Refresh:
+                    Websites.Refresh();
+                    break;
+                case Event.Remove:
+                    if (selectedType == typeof(Website))
+                    {
+                        Website website = (Website)webitem;
+                        Websites.Remove(website);
+                    }
+                    break;
+                default:
+                    break;
             }
         }
 
         public void Receive(WebsiteRequestMessage m)
         {
-            m.Reply(selectedWebItem as Website);
+            //if (newItem)
+            //{
+            //    m.Reply(null);
+            //    newItem = false;
+            //    return;
+            //}
+            m.Reply(SelectedWebItem as Website);
         }
-
     }
 
-    public class WebItemChangedMessage : ValueChangedMessage<IEntity>
+    public class WebItemChangedMessage : ValueChangedMessage<WebItemMessage>
     {
-        public WebItemChangedMessage(IEntity value) : base(value)
+        public WebItemChangedMessage(WebItemMessage value) : base(value)
         {
         }
     }
-    public class WebItemRemovedMessage : ValueChangedMessage<IEntity>
-    {
-        public WebItemRemovedMessage(IEntity value) : base(value)
-        {
-        }
-    }
+
     public class WebsiteRequestMessage : RequestMessage<Website?>
     {
-
     }
 }

@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.Messaging.Messages;
 using System;
 using System.Threading.Tasks;
 using WebBackup.Core;
@@ -16,9 +17,9 @@ namespace WebBackup.WPF.ViewModels
         protected readonly IWindowService _windowService;
         protected readonly IStringResourceService _stringResource;
 
-        protected BaseCommandsViewModel(IWebsiteRepository repository, IWindowService windowService, IStringResourceService stringResource)
+        protected BaseCommandsViewModel(IWebsiteRepository websiteRepository, IWindowService windowService, IStringResourceService stringResource)
         {
-            _websiteRepository = repository;
+            _websiteRepository = websiteRepository;
             _windowService = windowService;
             _stringResource = stringResource;
             Task.Run(LoadData);
@@ -28,10 +29,8 @@ namespace WebBackup.WPF.ViewModels
         protected abstract Task LoadData();
 
         [ObservableProperty]
-        public IEntity? selectedWebItem;
+        private IEntity? selectedWebItem;
 
-
-        // TODO: messenger selected item
         [ICommand]
         protected void NewItem(string itemType)
         {
@@ -39,9 +38,11 @@ namespace WebBackup.WPF.ViewModels
             {
                 return;
             }
-            SelectedWebItem = null;
+            // SelectedWebitem is null
+            // Messenger.Send(new WebItemChangedMessage(new WebItemMessage(null, Event.Select)));
             switch (itemType)
             {
+                // TODO: connections
                 case "website":
                     _windowService.ShowDialog<WebsiteFormWindow, MainWindow>();
                     break;
@@ -57,11 +58,13 @@ namespace WebBackup.WPF.ViewModels
             {
                 return;
             }
+            // selectedWebItem = webItem;
             Type selectedType = webItem.GetType();
             if (selectedType == typeof(Website))
             {
                 _windowService.ShowDialog<WebsiteFormWindow, MainWindow>();
             }
+            // TODO: connections
             else if (selectedType == typeof(FTPConnection))
             {
             }
@@ -87,12 +90,11 @@ namespace WebBackup.WPF.ViewModels
                 {
                     Website website = (Website)webItem;
                     await _websiteRepository.DeleteAsync(website);
-                    // Notify Treeview
-                    WeakReferenceMessenger.Default.Send(new WebItemRemovedMessage(website));
                     // Notify Status bar
-                    WeakReferenceMessenger.Default.Send(new WebsiteCountChangedMessage(-1));
+                    Messenger.Send(new WebsiteCountChangedMessage(-1));
                 }
             }
+            // TODO: connections
             else if (selectedType == typeof(FTPConnection))
             {
 
@@ -101,6 +103,16 @@ namespace WebBackup.WPF.ViewModels
             {
 
             }
+            // Notify Treeview
+            Messenger.Send(new WebItemChangedMessage(new WebItemMessage(webItem, Event.Remove)));
+            
+        }
+    }
+
+    public class WebItemSelectedMessage : ValueChangedMessage<IEntity>
+    {
+        public WebItemSelectedMessage(IEntity value) : base(value)
+        {
         }
     }
 }

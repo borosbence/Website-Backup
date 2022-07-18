@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.DependencyInjection;
+using CommunityToolkit.Mvvm.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,19 +33,24 @@ namespace WebBackup.WPF.Views
 
         private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            var vm = DataContext as WebsitesViewModel;
+            var vm = (WebsitesViewModel)DataContext;
+
             Type selectedType = e.NewValue.GetType();
             if (selectedType == typeof(Website))
             {
-                vm.SelectedWebItem = (Website)e.NewValue;
+                Website webItem = (Website)e.NewValue;
+                // vm.SelectedWebItem = webItem;
+                // Notify Main Window menu bar
+                WeakReferenceMessenger.Default.Send(new WebItemChangedMessage(new WebItemMessage(webItem, Event.Select)));
             }
             else if (selectedType == typeof(FTPConnection))
             {
-                vm.SelectedWebItem = (FTPConnection)e.NewValue;
+                // TODO: ftp selection
+                //vm.SelectedWebItem = (FTPConnection)e.NewValue;
             }
             else if (selectedType == typeof(SQLConnection))
             {
-                vm.SelectedWebItem = (SQLConnection)e.NewValue;
+                //vm.SelectedWebItem = (SQLConnection)e.NewValue;
             }
         }
     }

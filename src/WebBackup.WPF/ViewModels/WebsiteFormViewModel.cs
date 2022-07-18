@@ -82,14 +82,19 @@ namespace WebBackup.WPF.ViewModels
             if (exists)
             {
                 await _websiteRepository.UpdateAsync(website);
+                // Notify Treeview collection
+                WeakReferenceMessenger.Default.Send(new WebItemChangedMessage(new WebItemMessage(website, Event.Refresh)));
+                // WeakReferenceMessenger Main Window status bar
+                Messenger.Send(new WebsiteCountChangedMessage(1));
             }
             else
             {
                 await _websiteRepository.InsertAsync(website);
                 website.Id = website.Id;
+                // Notify collection
+                WeakReferenceMessenger.Default.Send(new WebItemChangedMessage(new WebItemMessage(website, Event.Add)));
             }
-            // Notify collection
-            WeakReferenceMessenger.Default.Send(new WebItemChangedMessage(website));
+            
             _windowService.Close(window);
         }
 

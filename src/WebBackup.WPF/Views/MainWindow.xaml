@@ -34,7 +34,7 @@
                         <TextBlock Text=" Edit"/>
                     </StackPanel>
                 </Button>
-                <Button Command="{Binding DeleteAsyncCommand}"
+                <Button Command="{Binding DeleteCommand}"
                         CommandParameter="{Binding SelectedWebItem}">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Style="{StaticResource MenuIcon}"
