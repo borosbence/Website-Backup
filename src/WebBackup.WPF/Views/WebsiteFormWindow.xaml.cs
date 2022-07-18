@@ -23,7 +23,8 @@ namespace WebBackup.WPF.Views
     {
         public WebsiteFormWindow()
         {
-            DataContext = Ioc.Default.GetRequiredService<WebsiteFormViewModel>();
+            // TODO: independent dialog???
+            // DataContext = Ioc.Default.GetRequiredService<WebsiteFormViewModel>();
             InitializeComponent();
         }
     }

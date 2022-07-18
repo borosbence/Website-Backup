@@ -38,13 +38,12 @@ namespace WebBackup.WPF.ViewModels
             {
                 return;
             }
-            // SelectedWebitem is null
-            // Messenger.Send(new WebItemChangedMessage(new WebItemMessage(null, Event.Select)));
             switch (itemType)
             {
                 // TODO: connections
                 case "website":
-                    _windowService.ShowDialog<WebsiteFormWindow, MainWindow>();
+                    var vm = new WebsiteFormViewModel(new Website(), _websiteRepository, _windowService, _stringResource);
+                    _windowService.ShowDialog<WebsiteFormWindow, MainWindow>(vm);
                     break;
                 default:
                     break;
@@ -58,11 +57,12 @@ namespace WebBackup.WPF.ViewModels
             {
                 return;
             }
-            // selectedWebItem = webItem;
             Type selectedType = webItem.GetType();
             if (selectedType == typeof(Website))
             {
-                _windowService.ShowDialog<WebsiteFormWindow, MainWindow>();
+                var website = (Website)webItem;
+                var vm = new WebsiteFormViewModel(website, _websiteRepository, _windowService, _stringResource);
+                _windowService.ShowDialog<WebsiteFormWindow, MainWindow>(vm);
             }
             // TODO: connections
             else if (selectedType == typeof(FTPConnection))
@@ -92,6 +92,8 @@ namespace WebBackup.WPF.ViewModels
                     await _websiteRepository.DeleteAsync(website);
                     // Notify Status bar
                     Messenger.Send(new WebsiteCountChangedMessage(-1));
+                    // Notify Treeview
+                    Messenger.Send(new WebItemChangedMessage(new WebItemMessage(webItem, Event.Remove)));
                 }
             }
             // TODO: connections
@@ -103,9 +105,6 @@ namespace WebBackup.WPF.ViewModels
             {
 
             }
-            // Notify Treeview
-            Messenger.Send(new WebItemChangedMessage(new WebItemMessage(webItem, Event.Remove)));
-            
         }
     }
 

@@ -6,7 +6,7 @@ namespace WebBackup.WPF
     {
         Add,
         Remove,
-        Refresh,
+        Replace,
         Select,
     }
     public class WebItemMessage

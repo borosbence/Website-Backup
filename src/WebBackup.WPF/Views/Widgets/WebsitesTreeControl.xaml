@@ -39,6 +39,7 @@
             </TreeView.ContextMenu>
             <TreeView.InputBindings>
                 <KeyBinding Key="Delete" Command="{Binding DeleteCommand}" CommandParameter="{Binding SelectedWebItem}" />
+                <KeyBinding Key="F2" Command="{Binding EditItemCommand}" CommandParameter="{Binding SelectedWebItem}" />
             </TreeView.InputBindings>
 
             <TreeView.Resources>

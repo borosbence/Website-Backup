@@ -17,15 +17,16 @@ namespace WebBackup.WPF.ViewModels
         private readonly IWindowService _windowService;
         private static IStringResourceService _stringResource;
 
-        public WebsiteFormViewModel(IWebsiteRepository repository, IWindowService windowService, IStringResourceService stringResource)
+        public WebsiteFormViewModel(Website selected,
+            IWebsiteRepository repository, IWindowService windowService, IStringResourceService stringResource)
         {
-            Website? selected = WeakReferenceMessenger.Default.Send<WebsiteRequestMessage>().Response;
             _websiteRepository = repository;
             _windowService = windowService;
             _stringResource = stringResource;
-            if (selected != null)
+            _website = selected;
+            // If existing, then edit else new item
+            if (_website.Id > 0)
             {
-                _website = selected;
                 Title = _stringResource.EditWebsite;
             }
             else
@@ -47,7 +48,7 @@ namespace WebBackup.WPF.ViewModels
         /// </summary>
         private bool firstOpen;
 
-        private readonly Website _website = new();
+        private readonly Website _website;
 
         private int Id => _website.Id;
 
@@ -83,9 +84,7 @@ namespace WebBackup.WPF.ViewModels
             {
                 await _websiteRepository.UpdateAsync(website);
                 // Notify Treeview collection
-                WeakReferenceMessenger.Default.Send(new WebItemChangedMessage(new WebItemMessage(website, Event.Refresh)));
-                // WeakReferenceMessenger Main Window status bar
-                Messenger.Send(new WebsiteCountChangedMessage(1));
+                WeakReferenceMessenger.Default.Send(new WebItemChangedMessage(new WebItemMessage(website, Event.Replace)));
             }
             else
             {
@@ -93,6 +92,7 @@ namespace WebBackup.WPF.ViewModels
                 website.Id = website.Id;
                 // Notify collection
                 WeakReferenceMessenger.Default.Send(new WebItemChangedMessage(new WebItemMessage(website, Event.Add)));
+                WeakReferenceMessenger.Default.Send(new WebsiteCountChangedMessage(1));
             }
             
             _windowService.Close(window);

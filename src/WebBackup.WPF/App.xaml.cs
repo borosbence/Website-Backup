@@ -52,8 +52,6 @@ namespace WebBackup.WPF
             // Transient - ViewModels
             services.AddTransient<MainViewModel>();
             services.AddTransient<WebsitesViewModel>();
-            services.AddTransient<WebsiteFormViewModel>();
-
 
             return services.BuildServiceProvider();
         }

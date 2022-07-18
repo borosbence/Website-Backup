@@ -24,13 +24,13 @@ namespace WebBackup.WPF.ViewModels
 
         protected override void OnActivated()
         {
-            Messenger.Register<WebItemChangedMessage>(this, (r, m) => UpdateSelected(m));
+            Messenger.Register<WebItemChangedMessage>(this, (r, m) => Receive(m));
             Messenger.Register<WebsiteCountChangedMessage>(this, (r, m) => Receive(m));
         }
 
-        private void UpdateSelected(WebItemChangedMessage m)
+        private void Receive(WebItemChangedMessage message)
         {
-            this.SelectedWebItem = m.Value.WebItem;
+            this.SelectedWebItem = message.Value.WebItem;
         }
 
         public void Receive(WebsiteCountChangedMessage message)

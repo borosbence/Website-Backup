@@ -33,13 +33,10 @@ namespace WebBackup.WPF.Views
 
         private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            var vm = (WebsitesViewModel)DataContext;
-
             Type selectedType = e.NewValue.GetType();
             if (selectedType == typeof(Website))
             {
                 Website webItem = (Website)e.NewValue;
-                // vm.SelectedWebItem = webItem;
                 // Notify Main Window menu bar
                 WeakReferenceMessenger.Default.Send(new WebItemChangedMessage(new WebItemMessage(webItem, Event.Select)));
             }

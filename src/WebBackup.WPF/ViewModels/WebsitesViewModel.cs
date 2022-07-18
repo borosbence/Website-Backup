@@ -11,7 +11,7 @@ using WebBackup.WPF.Services;
 
 namespace WebBackup.WPF.ViewModels
 {
-    public partial class WebsitesViewModel : BaseCommandsViewModel, IRecipient<WebsiteRequestMessage>
+    public partial class WebsitesViewModel : BaseCommandsViewModel
     {
         private readonly object _lock = new();
 
@@ -43,29 +43,20 @@ namespace WebBackup.WPF.ViewModels
         protected override void OnActivated()
         {
             Messenger.Register<WebItemChangedMessage>(this, (r, m) => Receive(m));
-            Messenger.Register<WebsiteRequestMessage>(this, (r, m) => Receive(m));
         }
 
-        private bool newItem;
-
-        private void Receive(WebItemChangedMessage m)
+        private void Receive(WebItemChangedMessage message)
         {
-            IEntity? webitem = m.Value.WebItem;
-            // TODO: new, after edit error
+            // TODO: service layer
+            IEntity? webitem = message.Value.WebItem;
             if (webitem == null)
             {
-                // newItem = true;
                 return;
             }
 
             Type selectedType = webitem.GetType();
-
-            // TODO: service layer
-            switch (m.Value.Event)
+            switch (message.Value.Event)
             {
-                case Event.Select:
-                    SelectedWebItem = webitem;
-                    break;
                 case Event.Add:
                     if (selectedType == typeof(Website))
                     {
@@ -74,9 +65,7 @@ namespace WebBackup.WPF.ViewModels
                     }
                     // TODO: add ftp connection 
                     break;
-                case Event.Refresh:
-                    Websites.Refresh();
-                    break;
+                
                 case Event.Remove:
                     if (selectedType == typeof(Website))
                     {
@@ -84,20 +73,15 @@ namespace WebBackup.WPF.ViewModels
                         Websites.Remove(website);
                     }
                     break;
+                case Event.Replace:
+                    Websites.Refresh();
+                    break;
+                case Event.Select:
+                    SelectedWebItem = webitem;
+                    break;
                 default:
                     break;
             }
-        }
-
-        public void Receive(WebsiteRequestMessage m)
-        {
-            //if (newItem)
-            //{
-            //    m.Reply(null);
-            //    newItem = false;
-            //    return;
-            //}
-            m.Reply(SelectedWebItem as Website);
         }
     }
 
@@ -106,9 +90,5 @@ namespace WebBackup.WPF.ViewModels
         public WebItemChangedMessage(WebItemMessage value) : base(value)
         {
         }
-    }
-
-    public class WebsiteRequestMessage : RequestMessage<Website?>
-    {
     }
 }

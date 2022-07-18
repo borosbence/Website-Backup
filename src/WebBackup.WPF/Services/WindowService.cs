@@ -1,11 +1,12 @@
-﻿using System.Linq;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System.Linq;
 using System.Windows;
 
 namespace WebBackup.WPF.Services
 {
     public interface IWindowService
     {
-        void ShowDialog<T, P>(object? viewModel = null) where T : Window, new() where P : Window;
+        void ShowDialog<T, P>(ObservableObject? viewModel = null) where T : Window, new() where P : Window;
         void Close(object window);
         bool ConfirmDelete(string? title, string? caption);
         
@@ -13,14 +14,14 @@ namespace WebBackup.WPF.Services
 
     public class WindowService : IWindowService
     {
-        public void ShowDialog<T, P>(object? viewModel = null) where T : Window, new() where P : Window
+        public void ShowDialog<Dialog, Parent>(ObservableObject? viewModel = null) where Dialog : Window, new() where Parent : Window
         {
-            Window window = new T();
+            Window window = new Dialog();
             if (viewModel != null)
             {
                 window.DataContext = viewModel;
             }
-            window.Owner = Application.Current.Windows.OfType<P>().SingleOrDefault(x => x.IsActive);
+            window.Owner = Application.Current.Windows.OfType<Parent>().SingleOrDefault(x => x.IsActive);
             window.ShowDialog();
         }
 
